@@ -5,7 +5,8 @@ import { swaggerDocument } from "./swagger";
 import { routes } from "./routes";
 import cors from "cors";
 
-import http from 'http'
+// import http from 'http';
+import https from 'https';
 
 const app = express();
 
@@ -18,14 +19,15 @@ app.use(cors());
 app.options("*", cors());
 
 
-let httpServer = new http.Server(app)
-
+// let httpServer = new http.Server(app)
+const httpsServer = https.createServer(app);
 
 routes(app);
 
-httpServer.listen(8080, function() {
+httpsServer.listen(8080, function() {
   console.log("listening on *:8080");
 });
+
 
 
 export { app};
