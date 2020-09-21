@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 
 
-var PORT = process.env.PORT || 8080;
+let PORT = process.env.PORT || 8080;
 
 const app = express();
 let httpServer = new http.Server(app)
