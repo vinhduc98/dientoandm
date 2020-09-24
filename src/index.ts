@@ -5,6 +5,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from './swagger';
 import { routes } from './routes';
+import dbChat from './database/chatmanage';
 
 
 let PORT = process.env.PORT || 8080;
@@ -19,6 +20,14 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.options("*", cors());
 
+dbChat.sequelize
+    .sync ({force:false, alter: true})
+    .then(()=>{
+        console.log("Connecting database chatmanage")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
 
 routes(app);
 let httpServer = new http.Server(app)
