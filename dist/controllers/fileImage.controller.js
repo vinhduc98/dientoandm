@@ -15,29 +15,45 @@ let cloudinary = require('cloudinary').v2;
 class FileImageController {
     uploadImage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let arrFile = [];
-            let arrSecureurl = [];
-            cloudinary.config(server_config_1.cloudinaryary);
-            const file = req.files.photo;
-            if (typeof (file) === 'object') {
-                if (file.length === undefined) {
-                    arrFile.push(file);
+            try {
+                let arrFile = [];
+                let arrSecureurl = [];
+                cloudinary.config(server_config_1.cloudinaryary);
+                const file = req.files.photo;
+                if (typeof (file) === 'object') {
+                    if (file.length === undefined) {
+                        arrFile.push(file);
+                    }
+                    else {
+                        arrFile = file;
+                    }
                 }
-                else {
-                    arrFile = file;
+                for (let i = 0; i < arrFile.length; i++) {
+                    yield cloudinary.uploader.upload(arrFile[i].tempFilePath, (err, result) => __awaiter(this, void 0, void 0, function* () {
+                        if (err) {
+                            return res.status(200).send({
+                                status: 0,
+                                description: 'File upload error',
+                                data: []
+                            });
+                        }
+                        arrSecureurl.push(result.secure_url);
+                    }));
                 }
+                console.log(arrSecureurl);
+                return res.status(200).send({
+                    status: 1,
+                    description: 'Ok',
+                    data: arrSecureurl
+                });
             }
-            for (let i = 0; i < arrFile.length; i++) {
-                yield cloudinary.uploader.upload(arrFile[i].tempFilePath, (err, result) => __awaiter(this, void 0, void 0, function* () {
-                    arrSecureurl.push(result.secure_url);
-                }));
+            catch (error) {
+                return res.status(200).send({
+                    status: 0,
+                    description: 'Server error or unsuitable file format (requires .png, .jpg, ...)',
+                    data: []
+                });
             }
-            console.log(arrSecureurl);
-            return res.status(200).send({
-                status: 1,
-                description: 'Ok',
-                data: arrSecureurl
-            });
         });
     }
 }

@@ -12,7 +12,7 @@ exports.uploadImage = {
                 schema: {
                     type: "object",
                     properties: {
-                        files: {
+                        photo: {
                             type: "file",
                             required: true,
                             description: "File to upload"
