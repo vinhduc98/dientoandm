@@ -5,7 +5,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from './swagger';
 import { routes } from './routes';
-import dbChat from './database/chatmanage';
+import dbChat from './database/cookingrecipe';
 
 
 let PORT = process.env.PORT || 8080;
@@ -23,7 +23,7 @@ app.options("*", cors());
 dbChat.sequelize
     .sync ({force:false, alter: true})
     .then(()=>{
-        console.log("Connecting database chatmanage")
+        console.log("Connecting database cookingrecipe")
     })
     .catch((err)=>{
         console.log(err)

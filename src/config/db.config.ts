@@ -1,8 +1,8 @@
-export const dbChat = {
+export const dbcookingrecipe = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "12345",
-    DB:"chatmanage",
+    DB:"cookingrecipe",
     pool: {
         max: 25,
         min: 0,

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.swaggerDocument = void 0;
+const file_swagger_1 = require("./swagger/file.swagger");
 exports.swaggerDocument = {
     openapi: "3.0.0",
     info: {
@@ -24,5 +25,16 @@ exports.swaggerDocument = {
             },
         },
     },
+    tags: [
+        {
+            name: "File",
+            description: "Everything about File"
+        }
+    ],
+    paths: {
+        "/api/Image/UploadImage": {
+            post: file_swagger_1.uploadImage
+        }
+    }
 };
 //# sourceMappingURL=swagger.js.map

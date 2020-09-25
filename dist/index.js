@@ -10,7 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = require("./swagger");
 const routes_1 = require("./routes");
-const chatmanage_1 = __importDefault(require("./database/chatmanage"));
+const cookingrecipe_1 = __importDefault(require("./database/cookingrecipe"));
 let PORT = process.env.PORT || 8080;
 const app = express_1.default();
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -20,10 +20,10 @@ app.set("views", path_1.default.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(cors_1.default());
 app.options("*", cors_1.default());
-chatmanage_1.default.sequelize
+cookingrecipe_1.default.sequelize
     .sync({ force: false, alter: true })
     .then(() => {
-    console.log("Connecting database chatmanage");
+    console.log("Connecting database cookingrecipe");
 })
     .catch((err) => {
     console.log(err);

@@ -27,4 +27,4 @@ const db = {
     Account: account_model_1.default(sequelize, sequelize_1.Sequelize)
 };
 exports.default = db;
-//# sourceMappingURL=chatmanage.js.map
+//# sourceMappingURL=cookingrecipe.js.map
