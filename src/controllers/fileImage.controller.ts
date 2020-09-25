@@ -5,7 +5,7 @@ export class FileImageController{
     uploadImage(req:any, res:any, next:any){
         // parse 1 file uploads
         let form = new formidable.IncomingForm();
-        form.uploadDir ='./src/uploads';
+        form.uploadDir ='src/uploads';
         form.keepExtensions = true;
         // 10MB
         form.maxFieldsSize = 10*1024*1024;
@@ -53,7 +53,7 @@ export class FileImageController{
     }
 
     getImage(req:any, res:any, next:any){
-        let imageName ="./src/uploads/"+req.query.imageName;
+        let imageName ="src/uploads/"+req.query.imageName;
         fs.readFile(imageName, (err:any, imageData:any)=>{
             if(err){
                 return res.status(200).send({
