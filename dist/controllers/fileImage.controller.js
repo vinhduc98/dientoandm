@@ -10,7 +10,7 @@ class FileImageController {
     uploadImage(req, res, next) {
         // parse 1 file uploads
         let form = new formidable_1.default.IncomingForm();
-        form.uploadDir = 'src/uploads';
+        form.uploadDir = './src/uploads';
         form.keepExtensions = true;
         // 10MB
         form.maxFieldsSize = 10 * 1024 * 1024;
@@ -28,7 +28,7 @@ class FileImageController {
                 if (files.files.length === undefined) {
                     fileName = files.files.path.split('\\')[2];
                     if (fileName.indexOf('.') <= -1) {
-                        fs_1.default.unlinkSync('src/uploads/' + fileName);
+                        fs_1.default.unlinkSync('./src/uploads/' + fileName);
                         arrFile = [];
                     }
                     else {
@@ -51,7 +51,7 @@ class FileImageController {
         });
     }
     getImage(req, res, next) {
-        let imageName = "src/uploads/" + req.query.imageName;
+        let imageName = "./src/uploads/" + req.query.imageName;
         fs_1.default.readFile(imageName, (err, imageData) => {
             if (err) {
                 return res.status(200).send({
