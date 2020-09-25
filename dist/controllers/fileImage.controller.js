@@ -63,6 +63,9 @@ class FileImageController {
             res.end(imageData);
         });
     }
+    test(req, res, next) {
+        res.status(200).send('Ok');
+    }
 }
 exports.FileImageController = FileImageController;
 //# sourceMappingURL=fileImage.controller.js.map

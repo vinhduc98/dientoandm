@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbChat = void 0;
-exports.dbChat = {
+exports.dbcookingrecipe = void 0;
+exports.dbcookingrecipe = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "12345",

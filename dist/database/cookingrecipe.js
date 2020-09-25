@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const db_config_1 = require("../config/db.config");
 const account_model_1 = __importDefault(require("../models/account.model"));
-const sequelize = new sequelize_1.Sequelize(db_config_1.dbChat.DB, db_config_1.dbChat.USER, db_config_1.dbChat.PASSWORD, {
-    host: db_config_1.dbChat.HOST,
+const sequelize = new sequelize_1.Sequelize(db_config_1.dbcookingrecipe.DB, db_config_1.dbcookingrecipe.USER, db_config_1.dbcookingrecipe.PASSWORD, {
+    host: db_config_1.dbcookingrecipe.HOST,
     dialect: "mysql",
     pool: {
-        max: db_config_1.dbChat.pool.max,
-        min: db_config_1.dbChat.pool.min,
-        acquire: db_config_1.dbChat.pool.acquire,
-        idle: db_config_1.dbChat.pool.idle
+        max: db_config_1.dbcookingrecipe.pool.max,
+        min: db_config_1.dbcookingrecipe.pool.min,
+        acquire: db_config_1.dbcookingrecipe.pool.acquire,
+        idle: db_config_1.dbcookingrecipe.pool.idle
     },
     define: {
         charset: "utf8",

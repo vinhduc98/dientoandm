@@ -67,5 +67,9 @@ export class FileImageController{
 
     }
 
+    test(req:any, res:any, next:any){
+        res.status(200).send('Ok');
+    }
+
 
 }

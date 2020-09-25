@@ -6,4 +6,5 @@ export function FileImageRoute(url:string, app:Express){
 
     app.route(`${url}/UploadImage`).post(fileimage.uploadImage);
     app.route(`${url}/getImage`).get(fileimage.getImage);
+    app.route(`${url}/test`).get(fileimage.test);
 }
