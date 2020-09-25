@@ -27,7 +27,7 @@ export class FileImageController{
                     fileName = files.files.path.split('\\')[2];
                     if(fileName.indexOf('.')<=-1)
                     {
-                        fs.unlinkSync(`${serverConfig.URLImage}/`+fileName);
+                        fs.unlinkSync(`${serverConfig.URLImage}`+fileName);
                         arrFile =[];
                     }
                     else{
@@ -54,7 +54,7 @@ export class FileImageController{
     }
 
     getImage(req:any, res:any, next:any){
-        let imageName =`${serverConfig.URLImage}/`+req.query.imageName;
+        let imageName =`${serverConfig.URLImage}`+req.query.imageName;
         fs.readFile(imageName, (err:any, imageData:any)=>{
             if(err){
                 return res.status(200).send({
