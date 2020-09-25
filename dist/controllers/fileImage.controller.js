@@ -6,15 +6,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileImageController = void 0;
 const formidable_1 = __importDefault(require("formidable"));
 const fs_1 = __importDefault(require("fs"));
+const server_config_1 = require("../config/server.config");
 class FileImageController {
     uploadImage(req, res, next) {
         // parse 1 file uploads
         let form = new formidable_1.default.IncomingForm();
-        form.uploadDir = 'src/uploads';
+        form.uploadDir = server_config_1.serverConfig.URLImage;
+        console.log(form.uploadDir);
         form.keepExtensions = true;
         // 10MB
         form.maxFieldsSize = 10 * 1024 * 1024;
         form.multiples = true;
+        form.parse(req);
         form.parse(req, (err, fields, files) => {
             if (err) {
                 return res.status(200).send({
@@ -28,7 +31,7 @@ class FileImageController {
                 if (files.files.length === undefined) {
                     fileName = files.files.path.split('\\')[2];
                     if (fileName.indexOf('.') <= -1) {
-                        fs_1.default.unlinkSync('./src/uploads/' + fileName);
+                        fs_1.default.unlinkSync(server_config_1.serverConfig.URLImage + fileName);
                         arrFile = [];
                     }
                     else {
@@ -51,7 +54,7 @@ class FileImageController {
         });
     }
     getImage(req, res, next) {
-        let imageName = "src/uploads/" + req.query.imageName;
+        let imageName = server_config_1.serverConfig.URLImage + req.query.imageName;
         fs_1.default.readFile(imageName, (err, imageData) => {
             if (err) {
                 return res.status(200).send({

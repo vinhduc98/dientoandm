@@ -6,11 +6,14 @@ export class FileImageController{
     uploadImage(req:any, res:any, next:any){
         // parse 1 file uploads
         let form = new formidable.IncomingForm();
-        form.uploadDir =__dirname+'/src/upload';
+
+        form.uploadDir =serverConfig.URLImage;
+        console.log(form.uploadDir);
         form.keepExtensions = true;
         // 10MB
         form.maxFieldsSize = 10*1024*1024;
         form.multiples= true;
+        form.parse(req);
         form.parse(req, (err:any, fields:any, files:any)=>{
             if(err){
                 return res.status(200).send({
@@ -27,7 +30,7 @@ export class FileImageController{
                     fileName = files.files.path.split('\\')[2];
                     if(fileName.indexOf('.')<=-1)
                     {
-                        fs.unlinkSync(__dirname+'/src/upload'+fileName);
+                        fs.unlinkSync(serverConfig.URLImage+fileName);
                         arrFile =[];
                     }
                     else{
@@ -54,7 +57,7 @@ export class FileImageController{
     }
 
     getImage(req:any, res:any, next:any){
-        let imageName =__dirname+'/src/upload/'+req.query.imageName;
+        let imageName =serverConfig.URLImage+req.query.imageName;
         fs.readFile(imageName, (err:any, imageData:any)=>{
             if(err){
                 return res.status(200).send({
