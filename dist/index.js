@@ -11,8 +11,12 @@ const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = require("./swagger");
 const routes_1 = require("./routes");
 const cookingrecipe_1 = __importDefault(require("./database/cookingrecipe"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
 let PORT = process.env.PORT || 8080;
 const app = express_1.default();
+app.use(express_fileupload_1.default({
+    useTempFiles: true
+}));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: "5mb" }));
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerDocument));

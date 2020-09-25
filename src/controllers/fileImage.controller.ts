@@ -1,80 +1,45 @@
 import formidable from 'formidable';
 import fs from 'fs';
-import {serverConfig} from '../config/server.config'
+import {cloudinaryary} from '../config/server.config';
+let cloudinary = require('cloudinary').v2;
 
 export class FileImageController{
-    uploadImage(req:any, res:any, next:any){
-        // parse 1 file uploads
-        let form = new formidable.IncomingForm();
 
-        form.uploadDir =serverConfig.URLImage;
-        console.log(form.uploadDir);
-        form.keepExtensions = true;
-        // 10MB
-        form.maxFieldsSize = 10*1024*1024;
-        form.multiples= true;
-        form.parse(req);
-        form.parse(req, (err:any, fields:any, files:any)=>{
-            if(err){
-                return res.status(200).send({
-                    status:0,
-                    description: `Cannot upload image : ${err}`
-                })
-            }
-            let arrFile:any = [];
-            let fileName:any;
-            if(typeof(files.files)==='object')
+    async uploadImage(req:any, res:any, next:any){
+
+        let arrFile:any=[];
+        let arrSecureurl:any=[];
+
+        cloudinary.config(cloudinaryary)
+
+        const file = req.files.photo;
+        if(typeof(file)==='object')
+        {
+            if(file.length===undefined)
             {
-                if(files.files.length===undefined)
-                {
-                    fileName = files.files.path.split('\\')[2];
-                    if(fileName.indexOf('.')<=-1)
-                    {
-                        fs.unlinkSync(serverConfig.URLImage+fileName);
-                        arrFile =[];
-                    }
-                    else{
-                        arrFile.push(fileName);
-                    }
-                }
-                else{
-                    for(let i=0;i<files.files.length;i++)
-                    {
-                        fileName=files.files[i].path.split('\\')[2]
-                        arrFile.push(fileName);
-                    }
-                }
-                console.log(arrFile);
+                arrFile.push(file)
+            }
+            else{
+               arrFile=file;
             }
 
-            return res.status(200).send({
-                status:1,
-                description:'Ok',
-                data:arrFile
+        }
+
+        for(let i=0;i<arrFile.length;i++)
+        {
+
+            await cloudinary.uploader.upload(arrFile[i].tempFilePath,async (err:any, result:any)=>{
+                arrSecureurl.push(result.secure_url);
             })
-
-        })
-    }
-
-    getImage(req:any, res:any, next:any){
-        let imageName =serverConfig.URLImage+req.query.imageName;
-        console.log(imageName);
-        fs.readFile(imageName, (err:any, imageData:any)=>{
-            if(err){
-                return res.status(200).send({
-                    status:0,
-                    description:'Failed to get the file'
-                })
-            }
-            res.writeHead(200,{'Content-Type':'image/jpeg'});
-            res.end(imageData);
+        }
+        console.log(arrSecureurl);
+        return res.status(200).send({
+            status:1,
+            description:'Ok',
+            data:arrSecureurl
         })
 
-    }
 
-    test(req:any, res:any, next:any){
-        res.status(200).send('Ok');
     }
-
 
 }

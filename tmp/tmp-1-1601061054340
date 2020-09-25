@@ -1,0 +1,42 @@
+* Tài liệu
+
+https://www.academia.edu/6240257/Ch%C6%B0%C6%A1ng_1._T%E1%BB%94NG_QUAN_V%E1%BB%80_KHAI_PH%C3%81_D%E1%BB%AE_LI%E1%BB%86U_WEB
+
+https://www.haui.edu.vn/media/26/ufpdf26980.pdf
+
+https://www.coursehero.com/file/p1rvi8i/Thu%E1%BA%ADt-to%C3%A1n-Na%C3%AFve-Bayes-B1-Hu%E1%BA%A5n-luy%E1%BB%87n-Na%C3%AFve-Bayes-tr%C3%AAn-t%E1%BA%ADp-DL-hu%E1%BA%A5n-luy%E1%BB%87n-L%C6%B0%E1%BB%A3ng/
+
+0) QUá trình phát hiện tri thức
+- Chọn lọc dữ liệu: Đây  là  giai  đoạn  tập  hợp các dữ liệu được khai thác từ một cSDl, một kho dữ  liệu,  thậm  chí  từ  các  nguồn  ứng  dụng  web  vào  một cSDl riêng. chúng ta chỉ chọn ra những dữ liệu cần thiết cho các giai đoạn sau. Tuy nhiên, công việc thu  gom  dữ  liệu  vào  một  cSDl  lớn  thường  rất  khó  khăn vì dữ  liệu nằm ở khắp nơi và dạng tạo lập khác nhau
+- Tiền xử lý dữ liệu: Phần  lớn  các  cSDl  đều  ít  nhiều  mang  tính  không  nhất  quán.  Vì  vậy khi gom dữ liệu rất có thể mắc một số lỗi như dữ liệu không đầy đủ, chặt chẽ và không lôgic (bị trùng lặp, giá trị bị sai lệch,...). Do đó cần phải được “tiền xử lý”  trước khi  khai  phá  dữ  liệu  nếu  không  sẽ  gây  nên  những kết quả sai lệch nghiêm trọng.
+- Chuyển   đổi   dữ   liệu   (transformation):   Trong   giai   đoạn này dữ liệu sẽ được chuyển đổi về dạng thuận tiện để tiến hành các thuật toán khám phá dữ liệu.
+Khai phá dữ liệu (Data ming): trong giai đoạn này ta sử dụng các kỹ thuật nhằm phát hiện ra các tri thức tiềm ẩn trong dữ liệu. một số kỹ thuật được sử dụng đó là: phân lớp, gom cụm, luật kết hợp.
+- Đánh giá kết quả mẫu: Đây là giai đoạn cuối cùng trong  tiến  trình  KDD.  Trong  giai  đoạn  này,  các  mẫu  dữ  liệu  được  chiết  xuất  bởi  các  phần  mềm  khai  phá  dữ liệu. Không phải bất cứ mẫu nào cũng đều có ích, thậm  chí  còn  bị  sai  lệch.  chính  vì  vậy,  cần  phải  xác  định và lựa chọn những tiêu chuẩn đánh giá sao cho sẽ chiết xuất ra các tri thức cần thiết.
+
+1) KTDL là gì?
+Khai phá dữ liệu là quá trình sử dụng các công cụ phân tích dữ liệu khác nhau để khám phá ra các mẫu dưới nhiều góc độ khác nhau nhằm phát hiện ra các mối quan hệ giữa các đối tượng, sự kiện bên trong CSDL, kết quả của KTDL là phát hiện ra các mẫu hay các mô hình tồn tại bên trong, nhưng nằm ẩn khuất trong CSDL để từ đó rút ra các mẫu, các mô hình hay các tri thức bên trong CSDL. 
+
+2) Các bước KTDL
+
+Xác định nhiệm vụ --> Xác định dữ liệu liên quan --> Thu thập các dữ liệu và tiền xử lý  
+
+--> Chọn thuật toán khai phá thích hợp --> Kết quả là các Mẫu.
+
+ - Đặc điểm của Mẫu là phải mới. Độ mới có thể được đo tương ứng với độ thay đổi trong CSDL. Thường thì độ mới của mẫu được đánh giá bằng các độ đo. Ngoài ra, mẫu phải có khả năng sử dụng tìm tàng. Các mẫu này sau khi được xử lý phải dẫn đến những hành động có ích nào đó. Mẫu khai thác được phải có giá trị đối với dữ liệu mới với độ chính xác nào đó.
+
+3) Các kỹ thuật KTDL
+
+* Khai thác tập phổ biến và luật kết hợp
+- Đây là quá trình khám phá các tập giá trị thuộc tính xuất hiện phổ biến trong các đối tượng dữ liệu. Từ tập phổ biến có thể tạo ra các luật kết hợp giữa các giá trị thuộc tính nhằm phản ánh khả năng xuất hiện đồng thời các giá trị thuộc tính trong các đối tượng.
+
+* Phân lớp dữ liệu
+- Là tiến trình khám phá các luật phân loại hay đặc trưng cho các tập dữ liệu đã được xếp lớp. Tập dữ liệu bao gồm các tập đối tượng đã được xác định lớp sẽ được dùng để tạo mô hình phân lớp dựa trên đặc trưng của đối tượng trong tập dữ liệu học.  các  luật  phân  lớp  được  sử  dụng  để  xây  dựng  các  bộ  phân  lớp  dữ  liệu.  Phân  lớp  dữ  liệu  có  vai  trò  quan  trọng  trong  tiến  trình  dự  báo  các  khuynh hướng quy luật phát triển.
+- 1 số kỹ thuật:
+ + Cây quyết định: cấu  trúc  dạng  hình  cây  là  biểu  thị  cho  các  quyết  định.  các  quyết  định này sinh ra các quy tắc để phân lớp và dự đoán (dự báo) tập dữ liệu mới chưa được phân lớp.
+ + Mạng noron: Đây là một trong những kỹ thuật được ứng dụng rất phổ biến hiện nay vì  kỹ  thuật  này  bắt  chước  khả  năng  tìm  kiếm  mẫu  của bộ não con người. Việc huấn luyện theo phương pháp này được bắt đầu bằng việc cho vào một tập dữ liệu (gọi là tập dữ liệu huấn luyện) mạng sẽ tự động điều chỉnh (học) qua từng lớp trong mạng và cho ra kết quả, quá trình huấn luyện được lặp đi lặp lại nhiều lần.
+
+* Gom cụm: 
+- là tiến trình nhận diện các cụm tiềm ẩn trong tập các đối tượng chưa được xếp lớp. Tiến  trình  phân  cụm  dựa  trên  mức  độ  tương  tự  giữa các đối tượng. Các đối tượng được gom cụm sao cho mức độ tương tự giữa các đối tượng trong cùng một cụm là cực đại và mức độ tương tự giữa các đối tượng nằm trong các cụm khác nhau là cực tiểu.
+- 1 số kỹ thuật:
+ + Phương pháp phân cấp: 
+ + Thuật giải K-means:

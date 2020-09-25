@@ -9,7 +9,7 @@ export const uploadImage:any={
                     schema: {
                         type: "object",
                         properties: {
-                        files: {
+                        photo: {
                                 type: "file",
                                 required: true,
                                 description: "File to upload"
