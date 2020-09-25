@@ -1,3 +1,3 @@
 export const serverConfig ={
-    URLImage:'https://github.com/vinhduc98/dientoandm/tree/master/src/uploads/'
+    URLImage:'http://res.cloudinary.com/demo/image/upload/'
 }

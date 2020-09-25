@@ -58,6 +58,7 @@ export class FileImageController{
 
     getImage(req:any, res:any, next:any){
         let imageName =serverConfig.URLImage+req.query.imageName;
+        console.log(imageName);
         fs.readFile(imageName, (err:any, imageData:any)=>{
             if(err){
                 return res.status(200).send({
