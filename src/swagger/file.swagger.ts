@@ -9,10 +9,15 @@ export const uploadImage:any={
                     schema: {
                         type: "object",
                         properties: {
-                        photo: {
-                                type: "file",
-                                required: true,
-                                description: "File to upload"
+                            photo: {
+                                    type: "array",
+                                    items:{
+                                        type: "string",
+                                        format: "binary"
+                                    }
+
+                                    // required: true,
+                                    // description: "File to upload"
                             }
                         }
                     }

@@ -7,11 +7,15 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             autoIncrement: true
         },
-        name: {
+        username: {
             type: Sequelize.STRING,
             allowNull: false
         },
         pwd: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        name: {
             type: Sequelize.STRING,
             allowNull: false
         },
@@ -23,7 +27,7 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             allowNull: false
         }
-    }, { timestamps: false });
+    }, { timestamps: false, indexes: [{ unique: true, fields: ['username'] }] });
     return account;
 };
 //# sourceMappingURL=account.model.js.map

@@ -13,9 +13,13 @@ exports.uploadImage = {
                     type: "object",
                     properties: {
                         photo: {
-                            type: "file",
-                            required: true,
-                            description: "File to upload"
+                            type: "array",
+                            items: {
+                                type: "string",
+                                format: "binary"
+                            }
+                            // required: true,
+                            // description: "File to upload"
                         }
                     }
                 }
