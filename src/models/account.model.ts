@@ -1,6 +1,7 @@
 import {Model, BuildOptions} from 'sequelize';
 export interface IAccount extends Model{
     id?:number,
+    name:string,
     username:string,
     pwd:string,
     type:number,
@@ -16,13 +17,17 @@ export default (sequelize:any, Sequelize:any)=>{
             type: Sequelize.INTEGER,
             autoIncrement:true
         },
-        name:{
+        username:{
             type:Sequelize.STRING,
             allowNull: false
         },
         pwd:{
             type:Sequelize.STRING,
             allowNull:false
+        },
+        name:{
+            type:Sequelize.STRING,
+            allowNull: false
         },
         type:{
             type:Sequelize.INTEGER,
@@ -32,7 +37,7 @@ export default (sequelize:any, Sequelize:any)=>{
             type:Sequelize.DATE,
             allowNull:false
         }
-    },{timestamps: false}) as IAccountStatic;
+    },{timestamps: false, indexes:[{unique:true, fields:['username']}]}) as IAccountStatic;
 
     return account
 }
