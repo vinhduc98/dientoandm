@@ -1,8 +1,8 @@
 export const dbcookingrecipe = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "12345",
-    DB:"cookingrecipe",
+    HOST: "bjsjmon4rexifmloqzmn-mysql.services.clever-cloud.com",
+    USER: "ul18hbpmbxdpyklj",
+    PASSWORD: "4Qz8mZj49zlVVGkZW7q6",
+    DB:"bjsjmon4rexifmloqzmn", // cookingrecipe
     pool: {
         max: 25,
         min: 0,
