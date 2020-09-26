@@ -32,7 +32,7 @@ export const uploadImage:any={
                 example: {
                     status: 1,
                     description: "Ok",
-                    data:['upload_a4755d91fa72bc6440527292f126fdc2.png']
+                    data:['https://res.cloudinary.com/adsun/image/upload/v1601094582/yfjbzf4d6nruxgsabsxu.jpg']
                 }
             }
             }
