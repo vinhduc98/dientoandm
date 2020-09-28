@@ -53,7 +53,6 @@ class AuthController {
                 // Lưu token vào trong CSDL
                 const d = new Date(Date.now());
                 d.setSeconds(d.getSeconds() + server_config_1.configToken.ExpiresIn);
-                console.log(d);
                 const token = {
                     token: accesstoken,
                     username: account.username,
@@ -75,6 +74,31 @@ class AuthController {
             }
             catch (error) {
                 console.log(error);
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    Logout(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = req.headers.authorization.split(" ")[1];
+            try {
+                let deleteToken = yield cookingrecipe_1.default.Token.destroy({
+                    where: {
+                        token
+                    }
+                });
+                if (deleteToken === 1) {
+                    return res.status(200).send({
+                        status: 1,
+                        description: "Logout thành công"
+                    });
+                }
+                return res.status(200).send({
+                    status: 0,
+                    description: "Token này hiện tại không có trong csdl"
+                });
+            }
+            catch (error) {
                 description_1.ErrorGeneral(error, 200, req, res, next);
             }
         });

@@ -1,6 +1,11 @@
 export const uploadImage:any={
     tags: ["File"],
-        consumes: ["multipart/form-data"],
+    security: [
+        {
+          BearerAuth: [],
+        },
+    ],
+    consumes: ["multipart/form-data"],
         requestBody: {
             description: "",
             require: true,

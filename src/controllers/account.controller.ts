@@ -37,4 +37,54 @@ export class AccountController{
         }
     }
 
+    async getAccountInfo(req:any, res:any, next:any){
+        let jwtPayLoad = req.jwtPayLoad;
+        let id = jwtPayLoad.id;
+        let user:any = {}
+        let transaction = await db.sequelize.transaction();
+        try {
+            const account = await db.Account.findOne({where:{
+                id
+            }});
+            if(account)
+            {
+                user = {
+                    id:account.id,
+                    username:account.username,
+                    name:account.name,
+                    avatar:account.avatar,
+                    type:account.type,
+                    favorites:[]
+                }
+                const favo = await db.Favorite.findAll({where:{
+                    accountId:account.id
+                }})
+                for(let i=0;i<favo.length;i++)
+                {
+                    if(user.favorites.indexOf(favo[i].dishId)<=-1)
+                    {
+                        user.favorites.push(favo[i].dishId);
+                    }
+                }
+            }
+            else{
+                user= {};
+            }
+
+            transaction.commit();
+            return res.status(200).send({
+                status:1,
+                description:"Ok",
+                user
+            })
+
+        } catch (error) {
+            if(transaction)
+            {
+                transaction.rollback();
+            }
+            ErrorGeneral(error,200,req,res,next);
+        }
+    }
+
 }

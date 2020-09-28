@@ -4,8 +4,6 @@ exports.FileImageRoute = void 0;
 const fileImage_controller_1 = require("../controllers/fileImage.controller");
 function FileImageRoute(url, app) {
     const fileImage = new fileImage_controller_1.FileImageController();
-    // app.route(`${url}/UploadImage`).post(fileimage.uploadImage);
-    // app.route(`${url}/getImage`).get(fileimage.getImage);
     app.route(`${url}/UploadImage`).post(fileImage.uploadImage);
 }
 exports.FileImageRoute = FileImageRoute;

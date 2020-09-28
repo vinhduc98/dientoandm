@@ -4,7 +4,7 @@ import http from 'http';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from './swagger';
-import { routes } from './routes';
+import { routes,routesNoauthenticate } from './routes';
 import dbChat from './database/cookingrecipe';
 import fileupload from 'express-fileupload';
 import fs from 'fs';
@@ -35,8 +35,9 @@ dbChat.sequelize
     .catch((err)=>{
         console.log(err)
     })
-
+routesNoauthenticate(app);
 routes(app);
+
 let httpServer = new http.Server(app)
 httpServer.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);

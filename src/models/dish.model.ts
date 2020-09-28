@@ -27,7 +27,8 @@ export default (sequelize:any, Sequelize:any)=>{
         },
         label:{
             type:Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            defaultValue: ""
         },
         description:{
             type:Sequelize.STRING,
@@ -40,10 +41,12 @@ export default (sequelize:any, Sequelize:any)=>{
         },
         category:{
             type:Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            defaultValue: ""
         },
         price:{
             type: Sequelize.DOUBLE,
+            allowNull: false,
             defaultValue:0
         },
     }) as IDishStatic;

@@ -68,4 +68,43 @@ export class AuthController{
             ErrorGeneral(error,200, req, res, next);
         }
     }
+
+    async Logout(req:any, res:any, next:any)
+    {
+        const token = req.headers.authorization.split(" ")[1] as string;
+        try {
+            let deleteToken = await db.Token.destroy({
+                where:{
+                    token
+                }
+            });
+            if(deleteToken===1)
+            {
+                return res.status(200).send({
+                    status:1,
+                    description:"Logout thành công"
+                })
+            }
+            return res.status(200).send({
+                status:0,
+                description:"Token này hiện tại không có trong csdl"
+            })
+        } catch (error) {
+            ErrorGeneral(error,200, req, res, next);
+        }
+    }
+    // async changeAvatar(req:any, res:any, next:any){
+    //     const body = req.body;
+    //     let transaction = await db.sequelize.transaction();
+    //     try {
+    //         const oldImg = body.oldImg;
+    //         const newImg = body.newImg;
+    //     } catch (error) {
+    //         if(transaction)
+    //         {
+    //             transaction.rollback();
+    //         }
+    //         ErrorGeneral(error,200,req,res,next);
+    //     }
+    // }
 }

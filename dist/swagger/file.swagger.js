@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadImage = void 0;
 exports.uploadImage = {
     tags: ["File"],
+    security: [
+        {
+            BearerAuth: [],
+        },
+    ],
     consumes: ["multipart/form-data"],
     requestBody: {
         description: "",

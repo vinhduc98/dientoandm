@@ -52,6 +52,52 @@ class AccountController {
             }
         });
     }
+    getAccountInfo(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let jwtPayLoad = req.jwtPayLoad;
+            let id = jwtPayLoad.id;
+            let user = {};
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
+            try {
+                const account = yield cookingrecipe_1.default.Account.findOne({ where: {
+                        id
+                    } });
+                if (account) {
+                    user = {
+                        id: account.id,
+                        username: account.username,
+                        name: account.name,
+                        avatar: account.avatar,
+                        type: account.type,
+                        favorites: []
+                    };
+                    const favo = yield cookingrecipe_1.default.Favorite.findAll({ where: {
+                            accountId: account.id
+                        } });
+                    for (let i = 0; i < favo.length; i++) {
+                        if (user.favorites.indexOf(favo[i].dishId) <= -1) {
+                            user.favorites.push(favo[i].dishId);
+                        }
+                    }
+                }
+                else {
+                    user = {};
+                }
+                transaction.commit();
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok",
+                    user
+                });
+            }
+            catch (error) {
+                if (transaction) {
+                    transaction.rollback();
+                }
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
 }
 exports.AccountController = AccountController;
 //# sourceMappingURL=account.controller.js.map

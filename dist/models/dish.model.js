@@ -13,7 +13,8 @@ exports.default = (sequelize, Sequelize) => {
         },
         label: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            defaultValue: ""
         },
         description: {
             type: Sequelize.STRING,
@@ -26,10 +27,12 @@ exports.default = (sequelize, Sequelize) => {
         },
         category: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            defaultValue: ""
         },
         price: {
             type: Sequelize.DOUBLE,
+            allowNull: false,
             defaultValue: 0
         },
     });
