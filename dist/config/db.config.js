@@ -25,4 +25,16 @@ exports.dbcookingrecipe = {
         idle: 10000,
     },
 };
+// export const dbcookingrecipe = {
+//     HOST: "bsxxfszfvzpmvubkd1ir-mysql.services.clever-cloud.com",
+//     USER: "umelrn6wka9ixhml",
+//     PASSWORD: "eKguHqjtEYoCSaDIbgao",
+//     DB:"bsxxfszfvzpmvubkd1ir", // cookingrecipe
+//     pool: {
+//         max: 25,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000,
+//     },
+// }
 //# sourceMappingURL=db.config.js.map

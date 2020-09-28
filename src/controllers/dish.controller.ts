@@ -57,7 +57,6 @@ export class DishController{
             let dishes:any=[];
             let dish:any={};
             getAlldish=await db.Dish.findAll({
-                include:{model:db.Comment,attributes:['author','rating','comment']},
                 order:[['updatedAt','DESC']]
             });
 
@@ -72,15 +71,23 @@ export class DishController{
                     category:getAlldish[i].category,
                     price:getAlldish[i].price,
                     accountId:getAlldish[i].accountId,
-                    imgs:[]
+                    imgs:[],
+                    comments:[]
                 };
 
                 let listimg = await db.DishImg.findAll({where:{
+                    dishId:getAlldish[i].id
+                }});
+                let listcmt = await db.Comment.findAll({where:{
                     dishId:getAlldish[i].id
                 }})
                 for(let m=0;m<listimg.length;m++)
                 {
                     dish.imgs.push(listimg[m].getDataValue('imgUrlImg'));
+                }
+                for(let n=0;n<listcmt.length;n++)
+                {
+                    dish.comments.push({author:listcmt[n].author, rating:listcmt[n].rating, comment:listcmt[n].comment});
                 }
                 if(dishes.indexOf(dish)<=-1)
                 {

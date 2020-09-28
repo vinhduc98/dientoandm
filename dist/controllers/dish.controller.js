@@ -82,13 +82,20 @@ class DishController {
                         category: getAlldish[i].category,
                         price: getAlldish[i].price,
                         accountId: getAlldish[i].accountId,
-                        imgs: []
+                        imgs: [],
+                        comments: []
                     };
                     let listimg = yield cookingrecipe_1.default.DishImg.findAll({ where: {
                             dishId: getAlldish[i].id
                         } });
+                    let listcmt = yield cookingrecipe_1.default.Comment.findAll({ where: {
+                            dishId: getAlldish[i].id
+                        } });
                     for (let m = 0; m < listimg.length; m++) {
                         dish.imgs.push(listimg[m].getDataValue('imgUrlImg'));
+                    }
+                    for (let n = 0; n < listcmt.length; n++) {
+                        dish.comments.push({ author: listcmt[n].author, rating: listcmt[n].rating, comment: listcmt[n].comment });
                     }
                     if (dishes.indexOf(dish) <= -1) {
                         dishes.push(dish);

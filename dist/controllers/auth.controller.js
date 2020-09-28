@@ -49,15 +49,15 @@ class AuthController {
                     name: account.name,
                     type: account.type,
                     username: account.username,
-                    avatar: account.avatar
                 }, server_config_1.configToken.SecretKey, { expiresIn: server_config_1.configToken.ExpiresIn });
                 // Lưu token vào trong CSDL
                 const d = new Date(Date.now());
                 d.setSeconds(d.getSeconds() + server_config_1.configToken.ExpiresIn);
+                console.log(d);
                 const token = {
                     token: accesstoken,
                     username: account.username,
-                    expiresIn: d
+                    expiredIn: d
                 };
                 yield cookingrecipe_1.default.Token.create(token);
                 return res.status(200).send({
@@ -74,6 +74,7 @@ class AuthController {
                 });
             }
             catch (error) {
+                console.log(error);
                 description_1.ErrorGeneral(error, 200, req, res, next);
             }
         });

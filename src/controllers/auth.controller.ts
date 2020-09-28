@@ -37,17 +37,15 @@ export class AuthController{
                 name:account.name,
                 type:account.type,
                 username:account.username,
-                avatar:account.avatar
             }, configToken.SecretKey,{expiresIn:configToken.ExpiresIn});
 
             // Lưu token vào trong CSDL
             const d = new Date(Date.now());
             d.setSeconds(d.getSeconds()+configToken.ExpiresIn);
-
             const token ={
                 token: accesstoken,
                 username: account.username,
-                expiresIn:d
+                expiredIn:d
             }
 
             await db.Token.create(token);
@@ -66,6 +64,7 @@ export class AuthController{
             })
 
         } catch (error) {
+            console.log(error);
             ErrorGeneral(error,200, req, res, next);
         }
     }
