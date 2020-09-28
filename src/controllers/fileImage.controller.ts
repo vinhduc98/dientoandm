@@ -1,5 +1,6 @@
 import formidable from 'formidable';
 import fs from 'fs';
+import db from '../database/cookingrecipe';
 import {cloudinaryary} from '../config/server.config';
 let cloudinary = require('cloudinary').v2;
 
@@ -39,7 +40,11 @@ export class FileImageController{
                             data:[]
                         })
                     }
+
                     arrSecureurl.push(result.secure_url);
+                    await db.Img.create({
+                        url_img:result.secure_url
+                    })
                 })
             }
             console.log(arrSecureurl);

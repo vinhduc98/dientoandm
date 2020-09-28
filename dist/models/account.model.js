@@ -19,15 +19,15 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        avatar: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         type: {
             type: Sequelize.INTEGER,
             defaultValue: 1
-        },
-        createDate: {
-            type: Sequelize.DATE,
-            allowNull: false
         }
-    }, { timestamps: false, indexes: [{ unique: true, fields: ['username'] }] });
+    }, { indexes: [{ unique: true, fields: ['username'] }] });
     return account;
 };
 //# sourceMappingURL=account.model.js.map

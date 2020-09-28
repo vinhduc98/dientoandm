@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileImageController = void 0;
+const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const server_config_1 = require("../config/server.config");
 let cloudinary = require('cloudinary').v2;
 class FileImageController {
@@ -38,6 +42,9 @@ class FileImageController {
                             });
                         }
                         arrSecureurl.push(result.secure_url);
+                        yield cookingrecipe_1.default.Img.create({
+                            url_img: result.secure_url
+                        });
                     }));
                 }
                 console.log(arrSecureurl);
