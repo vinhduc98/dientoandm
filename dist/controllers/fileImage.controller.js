@@ -19,6 +19,7 @@ let cloudinary = require('cloudinary').v2;
 class FileImageController {
     uploadImage(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            let jwtPayLoad = req.jwtPayLoad;
             try {
                 let arrFile = [];
                 let arrSecureurl = [];
@@ -43,7 +44,8 @@ class FileImageController {
                         }
                         arrSecureurl.push(result.secure_url);
                         yield cookingrecipe_1.default.Img.create({
-                            url_img: result.secure_url
+                            url_img: result.secure_url,
+                            createUser: jwtPayLoad.username
                         });
                     }));
                 }

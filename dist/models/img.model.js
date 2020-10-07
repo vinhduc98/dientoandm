@@ -6,6 +6,10 @@ exports.default = (sequelize, Sequelize) => {
             primaryKey: true,
             type: Sequelize.STRING,
             allowNull: false
+        },
+        createUser: {
+            type: Sequelize.STRING,
+            allowNull: false
         }
     });
     return img;

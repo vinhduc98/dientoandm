@@ -12,6 +12,7 @@ const swagger_1 = require("./swagger");
 const routes_1 = require("./routes");
 const cookingrecipe_1 = __importDefault(require("./database/cookingrecipe"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
+const defaultimg_config_1 = require("./config/defaultimg.config");
 let PORT = process.env.PORT || 8080;
 const app = express_1.default();
 app.use(express_fileupload_1.default({
@@ -28,6 +29,15 @@ cookingrecipe_1.default.sequelize
     .sync({ force: false, alter: true })
     .then(() => {
     console.log("Connecting database cookingrecipe");
+    cookingrecipe_1.default.Img.findOne({ where: {
+            url_img: defaultimg_config_1.img.iconlogin
+        } }).then(rs => {
+        if (rs === null) {
+            cookingrecipe_1.default.Img.create({
+                url_img: defaultimg_config_1.img.iconlogin
+            });
+        }
+    });
 })
     .catch((err) => {
     console.log(err);

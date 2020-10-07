@@ -34,6 +34,7 @@ const db ={
     DishImg:DishImg(sequelize,Sequelize),
     Favorite:Favorite(sequelize,Sequelize),
     Token:Token(sequelize,Sequelize)
+
 }
 
 // Map quan hệ giữa Account và Dish

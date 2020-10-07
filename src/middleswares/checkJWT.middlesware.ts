@@ -40,7 +40,7 @@ export const checkJWT = async (req:any, res:any, next:any)=>{
     {
         let jwtPayLoad: any;
         try {
-            jwtPayLoad = jwt.verify(token, configToken.SecretKey)
+            jwtPayLoad = jwt.verify(token, configToken.SecretKey);
             req.jwtPayLoad = jwtPayLoad;
         } catch (error) {
             await db.Token.destroy({where:{

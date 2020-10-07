@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAccountInfo = exports.createAccount = void 0;
+exports.changePassword = exports.updateAccount = exports.changeAvatar = exports.getAccountInfo = exports.createAccount = void 0;
 exports.createAccount = {
     tags: ["Account"],
     requestBody: {
@@ -80,6 +80,153 @@ exports.getAccountInfo = {
                             type: 1,
                             favorites: []
                         }
+                    }
+                }
+            }
+        }
+    }
+};
+exports.changeAvatar = {
+    tags: ["Account"],
+    security: [
+        {
+            BearerAuth: [],
+        },
+    ],
+    requestBody: {
+        description: "Thay đổi avatar",
+        require: true,
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        newAvatar: {
+                            type: "string",
+                            description: "url img muốn đổi"
+                        },
+                        oldAvatar: {
+                            type: "string",
+                            description: "url img cũ"
+                        },
+                    },
+                },
+                example: {
+                    newAvatar: "imgUrl",
+                    oldAvatar: "imgUrl",
+                }
+            }
+        }
+    },
+    responses: {
+        "200": {
+            description: "response",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object"
+                    },
+                    example: {
+                        status: 1,
+                        description: "Ok"
+                    }
+                }
+            }
+        }
+    }
+};
+exports.updateAccount = {
+    tags: ["Account"],
+    security: [
+        {
+            BearerAuth: [],
+        },
+    ],
+    requestBody: {
+        description: "Update account, favorite",
+        require: true,
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        name: {
+                            type: "string",
+                            description: "tên hiển thị"
+                        },
+                        favorites: {
+                            type: "array",
+                            description: "danh sách các id của dish"
+                        },
+                    },
+                },
+                example: {
+                    name: "Nguyên đổ bóng nguyên con",
+                    favorites: [1, 14],
+                }
+            }
+        }
+    },
+    responses: {
+        "200": {
+            description: "response",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object"
+                    },
+                    example: {
+                        status: 1,
+                        description: "Ok"
+                    }
+                }
+            }
+        }
+    }
+};
+exports.changePassword = {
+    tags: ["Account"],
+    security: [
+        {
+            BearerAuth: [],
+        },
+    ],
+    requestBody: {
+        description: "Đổi mật khẩu",
+        require: true,
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        oldPwd: {
+                            type: "string",
+                            description: "Mật khẩu cũ"
+                        },
+                        newPwd: {
+                            type: "string",
+                            description: "Mật khẩu mới"
+                        },
+                    },
+                },
+                example: {
+                    oldPwd: "",
+                    newPwd: "",
+                }
+            }
+        }
+    },
+    responses: {
+        "200": {
+            description: "response",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object"
+                    },
+                    example: {
+                        status: 1,
+                        description: "Ok"
                     }
                 }
             }

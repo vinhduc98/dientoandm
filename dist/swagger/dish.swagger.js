@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createDish = exports.getAlldish = void 0;
+exports.deleteDish = exports.updateDish = exports.createDish = exports.getAlldish = void 0;
 exports.getAlldish = {
     tags: ["Dish"],
     description: "Lấy thông tin tất cả các dish",
@@ -74,13 +74,99 @@ exports.createDish = {
                             type: "string",
                             description: "chú thích gì gì đó"
                         },
-                        img: {
+                        imgs: {
                             type: "array",
                             description: "danh sách hình để post lên - không có hình thì để rỗng"
                         },
                         accountId: {
                             type: "number",
-                            description: "Id account post lên"
+                            description: "Id account post lên - bắt buộc"
+                        },
+                    },
+                },
+                example: {
+                    name: "Bánh canh cua",
+                    label: "Hot",
+                    featured: false,
+                    category: "mains",
+                    price: 4.3,
+                    description: "Món ăn mém ngon",
+                    imgs: [],
+                    accountId: 2
+                }
+            }
+        }
+    },
+    responses: {
+        "200": {
+            description: "response",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                    },
+                    example: {
+                        status: 1,
+                        description: "Ok"
+                    }
+                }
+            }
+        }
+    }
+};
+exports.updateDish = {
+    tags: ["Dish"],
+    security: [
+        {
+            BearerAuth: [],
+        },
+    ],
+    parameters: [
+        {
+            in: "path",
+            name: "dishId",
+            require: true,
+            schema: {
+                type: "int",
+            },
+            description: "update 1 dish",
+        },
+    ],
+    requestBody: {
+        description: "update 1 Dish",
+        require: true,
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        name: {
+                            type: "string",
+                            description: "Trường này có hoặc không đều được"
+                        },
+                        label: {
+                            type: "string",
+                            description: "Trường này có hoặc không đều được"
+                        },
+                        featured: {
+                            type: "boolean",
+                            description: "Trường này có hoặc không đều được"
+                        },
+                        category: {
+                            type: "string",
+                            description: "Trường này có hoặc không đều được"
+                        },
+                        price: {
+                            type: "double",
+                            description: "Trường này có hoặc không đều được"
+                        },
+                        description: {
+                            type: "string",
+                            description: "Trường này có hoặc không đều được"
+                        },
+                        imgs: {
+                            type: "array",
+                            description: "Trường này có hoặc không đều được"
                         },
                     },
                 },
@@ -92,11 +178,45 @@ exports.createDish = {
                     price: 4.3,
                     description: "Món ăn mém ngon",
                     img: [],
-                    accountId: 2
                 }
             }
         }
     },
+    responses: {
+        "200": {
+            description: "response",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                    },
+                    example: {
+                        status: 1,
+                        description: "Ok"
+                    }
+                }
+            }
+        }
+    }
+};
+exports.deleteDish = {
+    tags: ["Dish"],
+    security: [
+        {
+            BearerAuth: [],
+        },
+    ],
+    parameters: [
+        {
+            in: "path",
+            name: "dishId",
+            require: true,
+            schema: {
+                type: "int",
+            },
+            description: "update 1 dish",
+        },
+    ],
     responses: {
         "200": {
             description: "response",

@@ -15,28 +15,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DishController = void 0;
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const description_1 = require("../description/description");
+const destroyfilecloudinary_1 = require("../functionManage/destroyfilecloudinary");
 class DishController {
     createDish(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            const body = req.body;
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
             try {
-                const body = req.body;
                 let createDish = yield cookingrecipe_1.default.Dish.create({
                     name: body.name,
                     label: body.label,
                     featured: body.featured,
                     category: body.category,
                     price: body.price,
-                    img: body.img,
+                    imgs: body.imgs,
                     description: body.description,
                     accountId: body.accountId
                 });
-                const img = body.img;
-                if (img.length > 0) {
-                    for (let i = 0; i < img.length; i++) {
+                const imgs = body.imgs;
+                if (imgs.length > 0) {
+                    for (let i = 0; i < imgs.length; i++) {
                         let getImg = yield cookingrecipe_1.default.Img.findOne({
                             where: {
-                                url_img: img[i]
-                            }
+                                url_img: imgs[i]
+                            }, transaction
                         });
                         if (getImg === null) {
                             return res.status(200).send({
@@ -48,17 +50,21 @@ class DishController {
                             const id = createDish.getDataValue('id');
                             let createDishimg = yield cookingrecipe_1.default.DishImg.create({
                                 dishId: id,
-                                imgUrlImg: img[i]
-                            });
+                                imgUrlImg: imgs[i]
+                            }, { transaction });
                         }
                     }
                 }
+                transaction.commit();
                 return res.status(200).send({
                     status: 1,
                     description: 'Ok'
                 });
             }
             catch (error) {
+                if (transaction) {
+                    transaction.rollback();
+                }
                 description_1.ErrorGeneral(error, 200, req, res, next);
             }
         });
@@ -108,6 +114,151 @@ class DishController {
                 });
             }
             catch (error) {
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    updateDish(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let dishId = req.params.dishId;
+            let jwtPayLoad = req.jwtPayLoad;
+            let body = req.body;
+            let functionHandle = new destroyfilecloudinary_1.FunctionHandle();
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
+            try {
+                yield cookingrecipe_1.default.Dish.update({
+                    name: body.name,
+                    label: body.label,
+                    description: body.description,
+                    featured: body.featured,
+                    category: body.category,
+                    price: body.price,
+                }, {
+                    where: {
+                        id: dishId
+                    }, transaction
+                });
+                if (body.imgs !== undefined) {
+                    yield cookingrecipe_1.default.DishImg.destroy({ where: {
+                            dishId
+                        }, transaction });
+                    let imgs = body.imgs;
+                    if (imgs.length > 0) {
+                        for (let i = 0; i < imgs.length; i++) {
+                            let getImg = yield cookingrecipe_1.default.Img.findOne({ where: {
+                                    url_img: imgs[i]
+                                } });
+                            if (getImg !== null) {
+                                // Tạo lại Dishimg
+                                yield cookingrecipe_1.default.DishImg.create({
+                                    dishId,
+                                    imgUrlImg: getImg.url_img
+                                }, { transaction });
+                            }
+                            else {
+                                return res.status(200).send({
+                                    status: 0,
+                                    description: 'Hình ảnh chưa được cập nhật lên server - yêu cầu kiểm tra lại'
+                                });
+                            }
+                        }
+                    }
+                    // Xóa ảnh từ server quản lý ảnh
+                    let ArrDishImg = [];
+                    let avatar = yield cookingrecipe_1.default.Account.findOne({
+                        attributes: ['avatar'],
+                        where: { id: jwtPayLoad.id }
+                    });
+                    let getImgbyuser = yield cookingrecipe_1.default.Img.findAll({
+                        attributes: ['url_img'],
+                        where: {
+                            createUser: jwtPayLoad.username
+                        }
+                    });
+                    let getDishimg = yield cookingrecipe_1.default.DishImg.findAll({
+                        attributes: ['imgUrlImg'],
+                        where: {
+                            dishId
+                        }
+                    });
+                    getDishimg.forEach((element) => {
+                        ArrDishImg.push(element.imgUrlImg);
+                    });
+                    for (let i = 0; i < getImgbyuser.length; i++) {
+                        if (ArrDishImg.indexOf(getImgbyuser[i].url_img) <= -1 && getImgbyuser[i].url_img !== avatar.avatar) {
+                            functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
+                            yield cookingrecipe_1.default.Img.destroy({
+                                where: { url_img: getImgbyuser[i].url_img }, transaction
+                            });
+                        }
+                    }
+                }
+                transaction.commit();
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok",
+                });
+            }
+            catch (error) {
+                if (transaction) {
+                    transaction.rollback();
+                }
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    deleteDish(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let dishId = req.params.dishId;
+            let functionHandle = new destroyfilecloudinary_1.FunctionHandle();
+            let jwtPayLoad = req.jwtPayLoad;
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
+            try {
+                let destroyDish = yield cookingrecipe_1.default.Dish.destroy({
+                    where: {
+                        id: dishId
+                    }, transaction
+                });
+                if (destroyDish === 1) {
+                    // Xóa bảng dishImg
+                    yield cookingrecipe_1.default.DishImg.destroy({
+                        where: {
+                            dishId
+                        }, transaction
+                    });
+                    // Lấy tất cả hình do user tạo
+                    let getImgbyuser = yield cookingrecipe_1.default.Img.findAll({
+                        where: {
+                            createUser: jwtPayLoad.username
+                        }
+                    });
+                    // Lấy avatar
+                    let avatar = yield cookingrecipe_1.default.Account.findOne({
+                        attributes: ['avatar'],
+                        where: { id: jwtPayLoad.id }
+                    });
+                    for (let i = 0; i < getImgbyuser.length; i++) {
+                        if (getImgbyuser[i].url_img !== avatar.avatar) {
+                            // Xóa tất cả hình tron Img
+                            functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
+                            yield cookingrecipe_1.default.Img.destroy({
+                                where: {
+                                    url_img: getImgbyuser[i].url_img
+                                }, transaction
+                            });
+                        }
+                    }
+                }
+                transaction.commit();
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok",
+                });
+            }
+            catch (error) {
+                if (transaction) {
+                    transaction.rollback();
+                }
                 description_1.ErrorGeneral(error, 200, req, res, next);
             }
         });

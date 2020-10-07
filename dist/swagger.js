@@ -59,11 +59,26 @@ exports.swaggerDocument = {
         "/api/Account/getAccountInfo": {
             get: account_swagger_1.getAccountInfo
         },
+        "/api/Account/changeAvatar": {
+            put: account_swagger_1.changeAvatar
+        },
+        "/api/Account/updateAccount": {
+            put: account_swagger_1.updateAccount
+        },
+        "/api/Account/changePassword": {
+            put: account_swagger_1.changePassword
+        },
         "/api/Dish/getAllDish": {
             get: dish_swagger_1.getAlldish
         },
         "/api/Dish/createDish": {
             post: dish_swagger_1.createDish
+        },
+        "/api/Dish/updateDish/{dishId}": {
+            put: dish_swagger_1.updateDish
+        },
+        "/api/Dish/deleteDish/{dishId}": {
+            delete: dish_swagger_1.deleteDish
         },
         "/api/Image/UploadImage": {
             post: file_swagger_1.uploadImage

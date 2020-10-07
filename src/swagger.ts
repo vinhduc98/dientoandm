@@ -1,7 +1,7 @@
 import {login,logout} from "./swagger/auth.swagger";
 import {uploadImage} from "./swagger/file.swagger";
-import {getAlldish,createDish} from "./swagger/dish.swagger";
-import {createAccount,getAccountInfo} from "./swagger/account.swagger";
+import {getAlldish,createDish,updateDish,deleteDish} from "./swagger/dish.swagger";
+import {createAccount,getAccountInfo,changeAvatar,updateAccount,changePassword} from "./swagger/account.swagger";
 export const swaggerDocument ={
     openapi: "3.0.0",
     info: {
@@ -56,11 +56,26 @@ export const swaggerDocument ={
       "/api/Account/getAccountInfo":{
         get:getAccountInfo
       },
+      "/api/Account/changeAvatar":{
+        put:changeAvatar
+      },
+      "/api/Account/updateAccount":{
+        put:updateAccount
+      },
+      "/api/Account/changePassword":{
+        put:changePassword
+      },
       "/api/Dish/getAllDish":{
         get:getAlldish
       },
       "/api/Dish/createDish":{
         post:createDish
+      },
+      "/api/Dish/updateDish/{dishId}":{
+        put:updateDish
+      },
+      "/api/Dish/deleteDish/{dishId}":{
+        delete:deleteDish
       },
       "/api/Image/UploadImage":{
         post: uploadImage

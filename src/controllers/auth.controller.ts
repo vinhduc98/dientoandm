@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import {ErrorGeneral} from '../description/description';
 import jwt from 'jsonwebtoken';
 import { configToken } from '../config/server.config';
+import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
 
 
 export class AuthController{
@@ -92,19 +93,6 @@ export class AuthController{
         } catch (error) {
             ErrorGeneral(error,200, req, res, next);
         }
+
     }
-    // async changeAvatar(req:any, res:any, next:any){
-    //     const body = req.body;
-    //     let transaction = await db.sequelize.transaction();
-    //     try {
-    //         const oldImg = body.oldImg;
-    //         const newImg = body.newImg;
-    //     } catch (error) {
-    //         if(transaction)
-    //         {
-    //             transaction.rollback();
-    //         }
-    //         ErrorGeneral(error,200,req,res,next);
-    //     }
-    // }
 }

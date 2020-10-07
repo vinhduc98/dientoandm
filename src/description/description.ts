@@ -49,7 +49,8 @@ export const ErrorGeneral = async (err:any,status:number ,req:any, res:any, next
             return res.status(status).send(
                 {
                     status:0,
-                    description:"Dữ liệu hiện tại bị lỗi"
+                    description:"Dữ liệu hiện tại bị lỗi",
+                    err
                 });
         }
 
@@ -66,8 +67,7 @@ export const ErrorGeneral = async (err:any,status:number ,req:any, res:any, next
             return res.status(status).send(
                 {
                     status:0,
-                    description:`${tableNameoferror(err,req,res)} vừa lựa chọn không tồn tại`,
-
+                    description:`${tableNameoferror(err,req,res)} ${err.value} vừa lựa chọn không tồn tại`
                 });
         }
         if(err.name==="SequelizeValidationError")
@@ -76,6 +76,7 @@ export const ErrorGeneral = async (err:any,status:number ,req:any, res:any, next
                 {
                     status:0,
                     description:`Lỗi website do quá trình thao tác dữ liệu`,
+                    err
 
                 });
         }
@@ -83,7 +84,7 @@ export const ErrorGeneral = async (err:any,status:number ,req:any, res:any, next
             return res.status(status).send(
                 {
                     status:0,
-                    description:`Lỗi server`,
+                    description:`Lỗi server`
                 });
         }
     }

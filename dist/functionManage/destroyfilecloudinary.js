@@ -16,8 +16,11 @@ let cloudinary = require('cloudinary').v2;
 class FunctionHandle {
     DestroyedFileImgOnCloudinary(filename) {
         return __awaiter(this, void 0, void 0, function* () {
+            let rootfile = filename.split('/')[filename.split('/').length - 1];
+            let vitri = rootfile.indexOf('.');
+            rootfile = rootfile.slice(0, vitri);
             cloudinary.config(server_config_1.cloudinaryary);
-            cloudinary.uploader.destroy(filename);
+            cloudinary.uploader.destroy(rootfile);
         });
     }
 }

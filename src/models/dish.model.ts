@@ -27,26 +27,21 @@ export default (sequelize:any, Sequelize:any)=>{
         },
         label:{
             type:Sequelize.STRING,
-            allowNull: false,
             defaultValue: ""
         },
         description:{
-            type:Sequelize.STRING,
-            allowNull: false
+            type:Sequelize.STRING
         },
         featured:{
             type: Sequelize.BOOLEAN,
-            allowNull: false,
             defaultValue: true
         },
         category:{
             type:Sequelize.STRING,
-            allowNull: false,
             defaultValue: ""
         },
         price:{
             type: Sequelize.DOUBLE,
-            allowNull: false,
             defaultValue:0
         },
     }) as IDishStatic;

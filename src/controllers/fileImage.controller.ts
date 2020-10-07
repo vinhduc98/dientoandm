@@ -8,6 +8,7 @@ export class FileImageController{
 
     async uploadImage(req:any, res:any, next:any){
 
+        let jwtPayLoad = req.jwtPayLoad;
         try {
             let arrFile:any=[];
             let arrSecureurl:any=[];
@@ -43,7 +44,8 @@ export class FileImageController{
 
                     arrSecureurl.push(result.secure_url);
                     await db.Img.create({
-                        url_img:result.secure_url
+                        url_img:result.secure_url,
+                        createUser: jwtPayLoad.username
                     })
                 })
             }

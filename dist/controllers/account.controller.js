@@ -18,6 +18,7 @@ const checkregex_1 = require("../functionManage/checkregex");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const description_1 = require("../description/description");
 const defaultimg_config_1 = require("../config/defaultimg.config");
+const destroyfilecloudinary_1 = require("../functionManage/destroyfilecloudinary");
 class AccountController {
     createAccount(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -57,7 +58,6 @@ class AccountController {
             let jwtPayLoad = req.jwtPayLoad;
             let id = jwtPayLoad.id;
             let user = {};
-            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
             try {
                 const account = yield cookingrecipe_1.default.Account.findOne({ where: {
                         id
@@ -83,7 +83,6 @@ class AccountController {
                 else {
                     user = {};
                 }
-                transaction.commit();
                 return res.status(200).send({
                     status: 1,
                     description: "Ok",
@@ -91,9 +90,154 @@ class AccountController {
                 });
             }
             catch (error) {
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    changeAvatar(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let functionHandle = new destroyfilecloudinary_1.FunctionHandle();
+            let body = req.body;
+            let jwtPayLoad = req.jwtPayLoad;
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
+            try {
+                let oldAvatar = body.oldAvatar;
+                let newAvatar = body.newAvatar;
+                const avatar = yield cookingrecipe_1.default.Account.findOne({
+                    where: {
+                        id: jwtPayLoad.id,
+                        avatar: oldAvatar
+                    }
+                });
+                if (avatar === null) {
+                    return res.status(200).send({
+                        status: 0,
+                        description: 'Lỗi web! avatar muốn thay đổi không phải là của account này'
+                    });
+                }
+                const getImg = yield cookingrecipe_1.default.Img.findOne({
+                    where: {
+                        url_img: newAvatar
+                    }
+                });
+                if (getImg === null) {
+                    return res.status(200).send({
+                        status: 0,
+                        description: 'Hình ảnh chưa được cập nhật lên server - yêu cầu kiểm tra lại'
+                    });
+                }
+                else {
+                    // update lại avatar mới
+                    yield cookingrecipe_1.default.Account.update({
+                        avatar: newAvatar
+                    }, {
+                        where: {
+                            id: jwtPayLoad.id
+                        }, transaction
+                    });
+                    // iconlogin là icon mặc định không được xóa ở server cũng như db
+                    if (oldAvatar !== defaultimg_config_1.img.iconlogin) {
+                        functionHandle.DestroyedFileImgOnCloudinary(oldAvatar);
+                        yield cookingrecipe_1.default.Img.destroy({ where: {
+                                url_img: oldAvatar
+                            }, transaction });
+                    }
+                    transaction.commit();
+                    return res.status(200).send({
+                        status: 1,
+                        description: "Ok"
+                    });
+                }
+            }
+            catch (error) {
                 if (transaction) {
                     transaction.rollback();
                 }
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    updateAccount(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
+            let body = req.body;
+            let jwtPayLoad = req.jwtPayLoad;
+            try {
+                let updateAccount = yield cookingrecipe_1.default.Account.update({
+                    name: body.name,
+                }, { where: {
+                        id: jwtPayLoad.id
+                    } });
+                if (body.favorites !== undefined) {
+                    let favorites = body.favorites;
+                    // xóa tất cả các favorite của id này
+                    yield cookingrecipe_1.default.Favorite.destroy({
+                        where: {
+                            accountId: jwtPayLoad.id
+                        }, transaction
+                    });
+                    if (favorites.length > 0) {
+                        for (let i = 0; i < favorites.length; i++) {
+                            yield cookingrecipe_1.default.Favorite.create({
+                                accountId: jwtPayLoad.id,
+                                dishId: favorites[i]
+                            }, { transaction });
+                        }
+                    }
+                }
+                transaction.commit();
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok"
+                });
+            }
+            catch (error) {
+                if (transaction) {
+                    transaction.rollback();
+                }
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    changePassword(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let jwtPayLoad = req.jwtPayLoad;
+            let body = req.body;
+            let account = yield cookingrecipe_1.default.Account.findOne({ where: { id: jwtPayLoad.id } });
+            const regex = new checkregex_1.RegexHandle();
+            try {
+                let isPwdvalid = bcryptjs_1.default.compareSync(body.oldPwd, account.pwd);
+                if (!isPwdvalid || (yield regex.kiemTraChuoiCoDau(body.oldPwd)) === true) {
+                    return res.status(200).send({
+                        status: 0,
+                        description: "Mật khẩu cũ không tồn tại"
+                    });
+                }
+                if (body.oldPwd === body.newPwd) {
+                    return res.status(200).send({
+                        status: 0,
+                        description: "Mật khẩu trùng với mật khẩu mới"
+                    });
+                }
+                if ((yield regex.kiemTraChuoiCoDau(body.newPwd)) === true) {
+                    return res.status(200).send({
+                        status: 0,
+                        description: "Mật khẩu không được có dấu"
+                    });
+                }
+                yield cookingrecipe_1.default.Account.update({
+                    pwd: bcryptjs_1.default.hashSync(body.newPwd, 10)
+                }, {
+                    where: {
+                        id: jwtPayLoad.id
+                    }
+                });
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok"
+                });
+            }
+            catch (error) {
                 description_1.ErrorGeneral(error, 200, req, res, next);
             }
         });

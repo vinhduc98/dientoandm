@@ -48,7 +48,8 @@ exports.ErrorGeneral = (err, status, req, res, next) => __awaiter(void 0, void 0
         if (err.name === "SequelizeDatabaseError") {
             return res.status(status).send({
                 status: 0,
-                description: "Dữ liệu hiện tại bị lỗi"
+                description: "Dữ liệu hiện tại bị lỗi",
+                err
             });
         }
         if (err.name === "SequelizeTimeoutError") {
@@ -60,19 +61,20 @@ exports.ErrorGeneral = (err, status, req, res, next) => __awaiter(void 0, void 0
         if (err.name === "SequelizeForeignKeyConstraintError") {
             return res.status(status).send({
                 status: 0,
-                description: `${tableNameoferror(err, req, res)} vừa lựa chọn không tồn tại`,
+                description: `${tableNameoferror(err, req, res)} ${err.value} vừa lựa chọn không tồn tại`
             });
         }
         if (err.name === "SequelizeValidationError") {
             return res.status(status).send({
                 status: 0,
                 description: `Lỗi website do quá trình thao tác dữ liệu`,
+                err
             });
         }
         else {
             return res.status(status).send({
                 status: 0,
-                description: `Lỗi server`,
+                description: `Lỗi server`
             });
         }
     }
