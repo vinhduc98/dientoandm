@@ -24,7 +24,8 @@ class NotifyController {
                 let getNotifies = yield cookingrecipe_1.default.Notify.findAll({
                     where: {
                         accountId: jwtPayLoad.id
-                    }
+                    },
+                    order: [['updatedAt', 'DESC']]
                 });
                 for (let i = 0; i < getNotifies.length; i++) {
                     notifies.push(getNotifies[i]);
