@@ -30,6 +30,7 @@ class DishController {
                     price: body.price,
                     imgs: body.imgs,
                     description: body.description,
+                    commentState: 1,
                     accountId: body.accountId
                 });
                 const imgs = body.imgs;
@@ -89,19 +90,24 @@ class DishController {
                         price: getAlldish[i].price,
                         accountId: getAlldish[i].accountId,
                         imgs: [],
-                        comments: []
+                        comments: [],
+                        commentState: getAlldish[i].commentState,
+                        createdDate: getAlldish[i].createdAt
                     };
                     let listimg = yield cookingrecipe_1.default.DishImg.findAll({ where: {
                             dishId: getAlldish[i].id
                         } });
-                    let listcmt = yield cookingrecipe_1.default.Comment.findAll({ where: {
+                    let listcmt = yield cookingrecipe_1.default.Comment.findAll({
+                        where: {
                             dishId: getAlldish[i].id
-                        } });
+                        },
+                        order: [['createdAt', 'DESC']]
+                    });
                     for (let m = 0; m < listimg.length; m++) {
                         dish.imgs.push(listimg[m].getDataValue('imgUrlImg'));
                     }
                     for (let n = 0; n < listcmt.length; n++) {
-                        dish.comments.push({ author: listcmt[n].author, rating: listcmt[n].rating, comment: listcmt[n].comment });
+                        dish.comments.push({ author: listcmt[n].author, rating: listcmt[n].rating, comment: listcmt[n].comment, state: listcmt[n].state });
                     }
                     if (dishes.indexOf(dish) <= -1) {
                         dishes.push(dish);
@@ -132,6 +138,7 @@ class DishController {
                     description: body.description,
                     featured: body.featured,
                     category: body.category,
+                    commentState: body.commentState,
                     price: body.price,
                 }, {
                     where: {

@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs'
 import {ErrorGeneral} from '../description/description';
 import {img} from '../config/defaultimg.config';
 import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
-import { where } from 'sequelize/types';
 
 export class AccountController{
     async createAccount(req:any, res:any, next:any){

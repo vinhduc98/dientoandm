@@ -22,6 +22,10 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: true
         },
+        commentState: {
+            type: Sequelize.INTEGER,
+            defaultValue: 1
+        },
         category: {
             type: Sequelize.STRING,
             defaultValue: ""

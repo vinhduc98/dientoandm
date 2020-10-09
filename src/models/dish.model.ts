@@ -8,6 +8,7 @@ export interface IDish extends Model{
     price:number,
     featured:boolean,
     description:string,
+    commentState:number,
     createDate?:Date,
     updateDate?:Date,
 }
@@ -35,6 +36,10 @@ export default (sequelize:any, Sequelize:any)=>{
         featured:{
             type: Sequelize.BOOLEAN,
             defaultValue: true
+        },
+        commentState:{
+            type: Sequelize.INTEGER,
+            defaultValue: 1
         },
         category:{
             type:Sequelize.STRING,

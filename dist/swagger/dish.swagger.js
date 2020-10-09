@@ -24,6 +24,7 @@ exports.getAlldish = {
                                 featured: "Kiểu bool, nêu true sẽ đưa lên đầu trang",
                                 category: "Loại dish",
                                 price: "Giá",
+                                commentState: 1,
                                 accountId: "tên account post dish lên",
                                 imgs: ["url_img1", "url_img2", "url_img3"],
                                 comments: ["comment1, comment2, comment3"]
@@ -75,8 +76,15 @@ exports.createDish = {
                             description: "chú thích gì gì đó"
                         },
                         imgs: {
-                            type: "array",
+                            type: "arr",
                             description: "danh sách hình để post lên - không có hình thì để rỗng"
+                        },
+                        commentState: {
+                            type: "int",
+                            description: "Trạng thái thiết kế giao diện - default = 1," +
+                                "0 (không cho cmt)," +
+                                "1(cmt tùy ý 1 là dùng tài khoản clone, 2 là đăng nhập mới được cmt)," +
+                                "2(chỉ cho đăng nhập mới được cmt)"
                         },
                         accountId: {
                             type: "number",

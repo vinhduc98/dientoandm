@@ -18,7 +18,11 @@ exports.default = (sequelize, Sequelize) => {
         author: {
             type: Sequelize.STRING,
             allowNull: false
-        }
+        },
+        state: {
+            type: Sequelize.STRING,
+            defaultValue: "Ẩn danh"
+        },
     });
     return cmt;
 };

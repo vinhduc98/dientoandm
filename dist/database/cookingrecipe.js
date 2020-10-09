@@ -12,6 +12,8 @@ const img_model_1 = __importDefault(require("../models/img.model"));
 const dishimg_model_1 = __importDefault(require("../models/dishimg.model"));
 const token_model_1 = __importDefault(require("../models/token.model"));
 const favorite_model_1 = __importDefault(require("../models/favorite.model"));
+const permission_model_1 = __importDefault(require("../models/permission.model"));
+const notify_model_1 = __importDefault(require("../models/notify.model"));
 const sequelize = new sequelize_1.Sequelize(db_config_1.dbcookingrecipe.DB, db_config_1.dbcookingrecipe.USER, db_config_1.dbcookingrecipe.PASSWORD, {
     host: db_config_1.dbcookingrecipe.HOST,
     dialect: "mysql",
@@ -36,7 +38,9 @@ const db = {
     Img: img_model_1.default(sequelize, sequelize_1.Sequelize),
     DishImg: dishimg_model_1.default(sequelize, sequelize_1.Sequelize),
     Favorite: favorite_model_1.default(sequelize, sequelize_1.Sequelize),
-    Token: token_model_1.default(sequelize, sequelize_1.Sequelize)
+    Token: token_model_1.default(sequelize, sequelize_1.Sequelize),
+    Permission: permission_model_1.default(sequelize, sequelize_1.Sequelize),
+    Notify: notify_model_1.default(sequelize, sequelize_1.Sequelize)
 };
 // Map quan hệ giữa Account và Dish
 db.Dish.belongsTo(db.Account);
@@ -54,5 +58,8 @@ db.Account.belongsToMany(db.Dish, {
     through: "favorites",
     timestamps: false
 });
+// Map quan hệ giữa account và notify
+db.Notify.belongsTo(db.Account);
+db.Account.hasMany(db.Notify);
 exports.default = db;
 //# sourceMappingURL=cookingrecipe.js.map

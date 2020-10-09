@@ -5,6 +5,8 @@ const auth_swagger_1 = require("./swagger/auth.swagger");
 const file_swagger_1 = require("./swagger/file.swagger");
 const dish_swagger_1 = require("./swagger/dish.swagger");
 const account_swagger_1 = require("./swagger/account.swagger");
+const comment_swagger_1 = require("./swagger/comment.swagger");
+const notify_swagger_1 = require("./swagger/notify.swagger");
 exports.swaggerDocument = {
     openapi: "3.0.0",
     info: {
@@ -79,6 +81,12 @@ exports.swaggerDocument = {
         },
         "/api/Dish/deleteDish/{dishId}": {
             delete: dish_swagger_1.deleteDish
+        },
+        "/api/Comment/createComment": {
+            post: comment_swagger_1.createComment
+        },
+        "/api/Notify/getNotifyByAccountId": {
+            get: notify_swagger_1.notify
         },
         "/api/Image/UploadImage": {
             post: file_swagger_1.uploadImage

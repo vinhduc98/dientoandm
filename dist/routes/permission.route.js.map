@@ -1,0 +1,1 @@
+{"version":3,"file":"permission.route.js","sourceRoot":"","sources":["../../src/routes/permission.route.ts"],"names":[],"mappings":";;;AACA,gFAAyE;AAEzE,SAAgB,eAAe,CAAC,GAAU,EAAE,GAAW;IACnD,MAAM,UAAU,GAAG,IAAI,4CAAoB,EAAE,CAAC;IAC9C,GAAG,CAAC,KAAK,CAAC,GAAG,GAAG,mBAAmB,CAAC,CAAC,IAAI,CAAC,UAAU,CAAC,gBAAgB,CAAC,CAAC;AAC3E,CAAC;AAHD,0CAGC"}

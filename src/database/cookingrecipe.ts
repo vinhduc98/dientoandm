@@ -7,6 +7,8 @@ import Img from "../models/img.model";
 import DishImg from "../models/dishimg.model";
 import Token from "../models/token.model";
 import Favorite from "../models/favorite.model";
+import Permission from "../models/permission.model";
+import Notify from "../models/notify.model";
 
 const sequelize = new Sequelize(dbcookingrecipe.DB, dbcookingrecipe.USER, dbcookingrecipe.PASSWORD,{
     host: dbcookingrecipe.HOST,
@@ -33,8 +35,9 @@ const db ={
     Img:Img(sequelize,Sequelize),
     DishImg:DishImg(sequelize,Sequelize),
     Favorite:Favorite(sequelize,Sequelize),
-    Token:Token(sequelize,Sequelize)
-
+    Token:Token(sequelize,Sequelize),
+    Permission:Permission(sequelize,Sequelize),
+    Notify:Notify(sequelize,Sequelize)
 }
 
 // Map quan hệ giữa Account và Dish
@@ -47,12 +50,14 @@ db.Dish.hasMany(db.Comment);
 db.Dish.belongsToMany(db.Img, {
     through: "DishImg",
     timestamps: false,
-  });
+});
 // Map quan hệ giữa account và dish (làm chức năng favorite)
 db.Account.belongsToMany(db.Dish,{
     through: "favorites",
     timestamps:false
 })
-
+// Map quan hệ giữa account và notify
+db.Notify.belongsTo(db.Account);
+db.Account.hasMany(db.Notify);
 
 export default db;

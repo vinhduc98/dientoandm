@@ -13,23 +13,11 @@
 // }
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbcookingrecipe = void 0;
-// export const dbcookingrecipe = {
-//     HOST: "localhost",
-//     USER: "root",
-//     PASSWORD: "12345",
-//     DB:"cookingrecipe", // cookingrecipe
-//     pool: {
-//         max: 25,
-//         min: 0,
-//         acquire: 30000,
-//         idle: 10000,
-//     },
-// }
 exports.dbcookingrecipe = {
-    HOST: "bsxxfszfvzpmvubkd1ir-mysql.services.clever-cloud.com",
-    USER: "umelrn6wka9ixhml",
-    PASSWORD: "eKguHqjtEYoCSaDIbgao",
-    DB: "bsxxfszfvzpmvubkd1ir",
+    HOST: "localhost",
+    USER: "root",
+    PASSWORD: "12345",
+    DB: "cookingrecipe",
     pool: {
         max: 25,
         min: 0,
@@ -37,4 +25,16 @@ exports.dbcookingrecipe = {
         idle: 10000,
     },
 };
+// export const dbcookingrecipe = {
+//     HOST: "bsxxfszfvzpmvubkd1ir-mysql.services.clever-cloud.com",
+//     USER: "umelrn6wka9ixhml",
+//     PASSWORD: "eKguHqjtEYoCSaDIbgao",
+//     DB:"bsxxfszfvzpmvubkd1ir", // cookingrecipe
+//     pool: {
+//         max: 25,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000,
+//     },
+// }
 //# sourceMappingURL=db.config.js.map

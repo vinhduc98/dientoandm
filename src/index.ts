@@ -49,7 +49,6 @@ db.sequelize
     .catch((err)=>{
         console.log(err)
     })
-
 routesNoauthenticate(app);
 routes(app);
 
