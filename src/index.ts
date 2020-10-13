@@ -37,16 +37,6 @@ db.sequelize
     .sync ({force:false, alter: true})
     .then(()=>{
         console.log("Connecting database cookingrecipe");
-        db.Img.findOne({where:{
-            url_img:img.iconlogin
-        }}).then(rs=>{
-            if(rs===null)
-            {
-                db.Img.create({
-                    url_img:img.iconlogin
-                })
-            }
-        })
     })
     .catch((err)=>{
         console.log(err)
