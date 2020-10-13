@@ -11,10 +11,11 @@ import fileupload from 'express-fileupload';
 import fs from 'fs';
 import {img} from './config/defaultimg.config'
 import { FunctionHandle } from './functionManage/destroyfilecloudinary';
+import morgan from "morgan"
 
 
 
-let PORT = process.env.PORT || 8080;
+let PORT = process.env.PORT || 8000;
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(fileupload({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "5mb" }));
+app.use(morgan("dev"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -49,6 +51,7 @@ db.sequelize
     .catch((err)=>{
         console.log(err)
     })
+
 routesNoauthenticate(app);
 routes(app);
 

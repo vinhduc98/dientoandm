@@ -12,14 +12,15 @@ const swagger_1 = require("./swagger");
 const routes_1 = require("./routes");
 const cookingrecipe_1 = __importDefault(require("./database/cookingrecipe"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
-const defaultimg_config_1 = require("./config/defaultimg.config");
-let PORT = process.env.PORT || 8080;
+const morgan_1 = __importDefault(require("morgan"));
+let PORT = process.env.PORT || 8000;
 const app = express_1.default();
 app.use(express_fileupload_1.default({
     useTempFiles: true
 }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: "5mb" }));
+app.use(morgan_1.default("dev"));
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerDocument));
 app.set("views", path_1.default.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -29,15 +30,16 @@ cookingrecipe_1.default.sequelize
     .sync({ force: false, alter: true })
     .then(() => {
     console.log("Connecting database cookingrecipe");
-    cookingrecipe_1.default.Img.findOne({ where: {
-            url_img: defaultimg_config_1.img.iconlogin
-        } }).then(rs => {
-        if (rs === null) {
-            cookingrecipe_1.default.Img.create({
-                url_img: defaultimg_config_1.img.iconlogin
-            });
-        }
-    });
+    // db.Img.findOne({where:{
+    //     url_img:img.iconlogin
+    // }}).then(rs=>{
+    //     if(rs===null)
+    //     {
+    //         db.Img.create({
+    //             url_img:img.iconlogin
+    //         })
+    //     }
+    // })
 })
     .catch((err) => {
     console.log(err);
