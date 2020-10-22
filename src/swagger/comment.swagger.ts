@@ -23,6 +23,10 @@ export const createComment = {
                         dishId:{
                             type:"int",
                             description:"Dish để comment"
+                        },
+                        isMember:{
+                            type:"int",
+                            description:"= 0 (là Ẩn Danh), = 1 (là thành viên)"
                         }
                     }
                 },
@@ -30,6 +34,7 @@ export const createComment = {
                     rating:3.5,
                     comment:"Nhìn z mà ngon gì chời, dở ẹt, thằng Nguyên bê đê còn ngon hơn thằng Nguyên bóng",
                     author:"agent1",
+                    isMember: 0,
                     dishId:1
                 }
             }

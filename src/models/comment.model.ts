@@ -4,7 +4,7 @@ export interface IComment extends Model{
     rating:number,
     comment:string,
     author:string,
-    state:string
+    isMember:number
 }
 
 type ICommentStatic = typeof Model & (new (values?:object, options?:BuildOptions)=>IComment)
@@ -28,9 +28,9 @@ export default (sequelize:any, Sequelize:any)=>{
             type:Sequelize.STRING,
             allowNull: false
         },
-        state:{
-            type:Sequelize.STRING,
-            defaultValue:"Ẩn danh"
+        isMember:{
+            type:Sequelize.INTEGER,
+            defaultValue:0 // Ẩn danh
         },
     }) as ICommentStatic;
 

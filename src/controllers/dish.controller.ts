@@ -103,7 +103,7 @@ export class DishController{
                 }
                 for(let n=0;n<listcmt.length;n++)
                 {
-                    dish.comments.push({author:listcmt[n].author, rating:listcmt[n].rating, comment:listcmt[n].comment, state:listcmt[n].state});
+                    dish.comments.push({author:listcmt[n].author, rating:listcmt[n].rating, comment:listcmt[n].comment, isMember:listcmt[n].isMember});
                 }
                 if(dishes.indexOf(dish)<=-1)
                 {

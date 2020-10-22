@@ -25,6 +25,7 @@ class CommentController {
                     rating: body.rating,
                     comment: body.comment,
                     author: body.author,
+                    isMember: body.isMember,
                     dishId: body.dishId
                 }, { transaction });
                 if (createCmt.getDataValue("id") !== undefined) {
@@ -35,12 +36,13 @@ class CommentController {
                             username: author
                         }
                     });
-                    if (findAccount !== null) {
-                        yield cookingrecipe_1.default.Comment.update({
-                            state: "Thành viên"
-                        }, { where: {
-                                id
-                            }, transaction });
+                    if (createCmt.getDataValue('isMember') === 1) {
+                        if (findAccount === null) {
+                            return res.status(200).send({
+                                status: 0,
+                                description: 'Đây không phải là thành viên trong nhóm'
+                            });
+                        }
                     }
                     let findDish = yield cookingrecipe_1.default.Dish.findOne({
                         where: {

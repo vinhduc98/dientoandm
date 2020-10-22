@@ -11,6 +11,7 @@ export class CommentController{
                 rating:body.rating,
                 comment:body.comment,
                 author:body.author,
+                isMember:body.isMember,
                 dishId:body.dishId
             },{transaction})
             if(createCmt.getDataValue("id")!==undefined)
@@ -22,13 +23,15 @@ export class CommentController{
                         username:author
                     }
                 })
-                if(findAccount!==null)
+                if(createCmt.getDataValue('isMember')===1)
                 {
-                    await db.Comment.update({
-                        state:"Thành viên"
-                    },{where:{
-                        id
-                    },transaction})
+                    if(findAccount===null)
+                    {
+                        return res.status(200).send({
+                            status:0,
+                            description:'Lỗi web! isMember hiện tại set trạng thái thành viên nhưng author không có trong danh sách user'
+                        })
+                    }
                 }
 
                 let findDish = await db.Dish.findOne({

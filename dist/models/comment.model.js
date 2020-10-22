@@ -19,9 +19,9 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        state: {
-            type: Sequelize.STRING,
-            defaultValue: "Ẩn danh"
+        isMember: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0 // Ẩn danh
         },
     });
     return cmt;
