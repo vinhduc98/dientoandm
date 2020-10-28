@@ -20,6 +20,7 @@ class DishController {
     createDish(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const body = req.body;
+            const jwt = req.jwtPayLoad;
             let transaction = yield cookingrecipe_1.default.sequelize.transaction();
             try {
                 let createDish = yield cookingrecipe_1.default.Dish.create({
@@ -31,7 +32,7 @@ class DishController {
                     imgs: body.imgs,
                     description: body.description,
                     commentState: 1,
-                    accountId: body.accountId
+                    accountId: jwt.id
                 });
                 const imgs = body.imgs;
                 if (imgs.length > 0) {

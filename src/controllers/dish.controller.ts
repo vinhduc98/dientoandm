@@ -5,6 +5,7 @@ import {img} from '../config/defaultimg.config';
 export class DishController{
     async createDish(req:any, res:any, next:any){
         const body =req.body;
+        const jwt = req.jwtPayLoad;
         let transaction = await db.sequelize.transaction();
         try {
             let createDish = await db.Dish.create({
@@ -16,7 +17,7 @@ export class DishController{
                 imgs:body.imgs,
                 description:body.description,
                 commentState:1,
-                accountId:body.accountId
+                accountId:jwt.id
             })
 
             const imgs:any =body.imgs;
