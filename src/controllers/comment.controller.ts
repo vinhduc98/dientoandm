@@ -45,8 +45,6 @@ export class CommentController{
                     state:1,
                     accountId:findDish.getDataValue("accountId")
                 })
-
-
             }
 
             transaction.commit();

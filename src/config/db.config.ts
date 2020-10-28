@@ -24,25 +24,11 @@
 //     },
 // }
 
-export const dbcookingrecipe = {
-    HOST: "bsxxfszfvzpmvubkd1ir-mysql.services.clever-cloud.com",
-    USER: "umelrn6wka9ixhml",
-    PASSWORD: "eKguHqjtEYoCSaDIbgao",
-    DB:"bsxxfszfvzpmvubkd1ir", // cookingrecipe
-    pool: {
-        max: 25,
-        min: 0,
-        acquire: 30000,
-        idle: 10000,
-    },
-}
-
-
 // export const dbcookingrecipe = {
-//     HOST: "103.69.193.235",
-//     USER: "cloudcomputing",
-//     PASSWORD: "123456",
-//     DB:"cookingrecipe", // cookingrecipe
+//     HOST: "bsxxfszfvzpmvubkd1ir-mysql.services.clever-cloud.com",
+//     USER: "umelrn6wka9ixhml",
+//     PASSWORD: "eKguHqjtEYoCSaDIbgao",
+//     DB:"bsxxfszfvzpmvubkd1ir", // cookingrecipe
 //     pool: {
 //         max: 25,
 //         min: 0,
@@ -50,3 +36,17 @@ export const dbcookingrecipe = {
 //         idle: 10000,
 //     },
 // }
+
+
+export const dbcookingrecipe = {
+    HOST: "172.104.168.133",
+    USER: "dientoandm",
+    PASSWORD: "dientoandm",
+    DB:"dbcookingrecipe", // cookingrecipe
+    pool: {
+        max: 25,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+    },
+}

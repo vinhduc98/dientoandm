@@ -40,7 +40,7 @@ class CommentController {
                         if (findAccount === null) {
                             return res.status(200).send({
                                 status: 0,
-                                description: 'Đây không phải là thành viên trong nhóm'
+                                description: 'Lỗi web! isMember hiện tại set trạng thái thành viên nhưng author không có trong danh sách user'
                             });
                         }
                     }
