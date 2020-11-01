@@ -82,7 +82,7 @@ export class DishController{
                     price:getAlldish[i].price,
                     accountId:getAlldish[i].accountId,
                     imgs:[],
-                    comments:[],
+                    // comments:[],
                     commentState:getAlldish[i].commentState,
                     createdDate:getAlldish[i].createdAt
                 };
@@ -90,22 +90,22 @@ export class DishController{
                 let listimg = await db.DishImg.findAll({where:{
                     dishId:getAlldish[i].id
                 }});
-                let listcmt = await db.Comment.findAll({
-                    where:{
+                // let listcmt = await db.Comment.findAll({
+                //     where:{
 
-                        dishId:getAlldish[i].id
-                    },
-                    order:[['createdAt','DESC']]
-                })
+                //         dishId:getAlldish[i].id
+                //     },
+                //     order:[['createdAt','DESC']]
+                // })
 
                 for(let m=0;m<listimg.length;m++)
                 {
                     dish.imgs.push(listimg[m].getDataValue('imgUrlImg'));
                 }
-                for(let n=0;n<listcmt.length;n++)
-                {
-                    dish.comments.push({author:listcmt[n].author, rating:listcmt[n].rating, comment:listcmt[n].comment, isMember:listcmt[n].isMember});
-                }
+                // for(let n=0;n<listcmt.length;n++)
+                // {
+                //     dish.comments.push({author:listcmt[n].author, rating:listcmt[n].rating, comment:listcmt[n].comment, isMember:listcmt[n].isMember});
+                // }
                 if(dishes.indexOf(dish)<=-1)
                 {
                     dishes.push(dish);

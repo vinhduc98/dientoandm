@@ -85,11 +85,7 @@ exports.createDish = {
                                 "0 (không cho cmt)," +
                                 "1(cmt tùy ý 1 là dùng tài khoản clone, 2 là đăng nhập mới được cmt)," +
                                 "2(chỉ cho đăng nhập mới được cmt)"
-                        },
-                        accountId: {
-                            type: "number",
-                            description: "Id account post lên - bắt buộc"
-                        },
+                        }
                     },
                 },
                 example: {
@@ -99,8 +95,7 @@ exports.createDish = {
                     category: "mains",
                     price: 4.3,
                     description: "Món ăn mém ngon",
-                    imgs: [],
-                    accountId: 2
+                    imgs: []
                 }
             }
         }

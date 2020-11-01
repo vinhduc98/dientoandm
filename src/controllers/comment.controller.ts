@@ -12,7 +12,8 @@ export class CommentController{
                 comment:body.comment,
                 author:body.author,
                 isMember:body.isMember,
-                dishId:body.dishId
+                dishId:body.dishId,
+                isChildren:body.isChildren
             },{transaction})
             if(createCmt.getDataValue("id")!==undefined)
             {
@@ -57,6 +58,26 @@ export class CommentController{
             {
                 transaction.rollback();
             }
+            ErrorGeneral(error,200,req,res,next);
+        }
+    }
+
+    async getCommentByDishId(req:any, res:any, next:any){
+        try {
+            let dishId = req.params.dishId;
+            let comments = await db.Comment.findAll({
+                where:{
+                    dishId
+                },
+                order:[['updatedAt','DESC']]
+            })
+
+            return res.status(200).send({
+                status:1,
+                description:"Ok",
+                comments
+            })
+        } catch (error) {
             ErrorGeneral(error,200,req,res,next);
         }
     }

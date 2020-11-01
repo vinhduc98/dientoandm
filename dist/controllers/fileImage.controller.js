@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileImageController = void 0;
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const server_config_1 = require("../config/server.config");
+let formidable = require('formidable');
 let cloudinary = require('cloudinary').v2;
 class FileImageController {
     uploadImage(req, res, next) {
@@ -63,6 +64,11 @@ class FileImageController {
                     data: []
                 });
             }
+        });
+    }
+    uploadImageTest(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return res.status(200).send("Ok");
         });
     }
 }

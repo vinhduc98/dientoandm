@@ -1,7 +1,8 @@
-import formidable from 'formidable';
 import fs from 'fs';
 import db from '../database/cookingrecipe';
 import {cloudinaryary} from '../config/server.config';
+let formidable = require('formidable');
+import path from 'path';
 let cloudinary = require('cloudinary').v2;
 
 export class FileImageController{
@@ -62,6 +63,10 @@ export class FileImageController{
                 data:[]
             })
         }
+    }
+
+    async uploadImageTest(req:any, res:any, next:any){
+        return res.status(200).send("Ok");
     }
 
 }

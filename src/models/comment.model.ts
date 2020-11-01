@@ -4,7 +4,8 @@ export interface IComment extends Model{
     rating:number,
     comment:string,
     author:string,
-    isMember:number
+    isMember:number,
+    isChilden:number
 }
 
 type ICommentStatic = typeof Model & (new (values?:object, options?:BuildOptions)=>IComment)
@@ -32,6 +33,10 @@ export default (sequelize:any, Sequelize:any)=>{
             type:Sequelize.INTEGER,
             defaultValue:0 // Ẩn danh
         },
+        isChildren:{
+            type:Sequelize.INTEGER,
+            defaultValue:0 // 0 là cha, có id là con của
+        }
     }) as ICommentStatic;
 
     return cmt;

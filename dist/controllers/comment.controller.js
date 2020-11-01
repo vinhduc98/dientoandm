@@ -26,7 +26,8 @@ class CommentController {
                     comment: body.comment,
                     author: body.author,
                     isMember: body.isMember,
-                    dishId: body.dishId
+                    dishId: body.dishId,
+                    isChildren: body.isChildren
                 }, { transaction });
                 if (createCmt.getDataValue("id") !== undefined) {
                     let id = createCmt.getDataValue("id");
@@ -66,6 +67,27 @@ class CommentController {
                 if (transaction) {
                     transaction.rollback();
                 }
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
+    getCommentByDishId(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let dishId = req.params.dishId;
+                let comments = yield cookingrecipe_1.default.Comment.findAll({
+                    where: {
+                        dishId
+                    },
+                    order: [['updatedAt', 'DESC']]
+                });
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok",
+                    comments
+                });
+            }
+            catch (error) {
                 description_1.ErrorGeneral(error, 200, req, res, next);
             }
         });

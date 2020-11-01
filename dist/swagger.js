@@ -85,6 +85,9 @@ exports.swaggerDocument = {
         "/api/Comment/createComment": {
             post: comment_swagger_1.createComment
         },
+        "/api/Comment/getCommentByDishId/{dishId}": {
+            get: comment_swagger_1.getCommentByDishId
+        },
         "/api/Notify/getNotifyByAccountId": {
             get: notify_swagger_1.notify
         },

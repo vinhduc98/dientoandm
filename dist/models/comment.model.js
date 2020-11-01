@@ -23,6 +23,10 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             defaultValue: 0 // Ẩn danh
         },
+        isChildren: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0 // 0 là cha, có id là con của
+        }
     });
     return cmt;
 };

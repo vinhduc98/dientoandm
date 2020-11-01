@@ -95,8 +95,7 @@ export const createDish:any={
                     category:"mains",
                     price:4.3,
                     description:"Món ăn mém ngon",
-                    imgs:[],
-                    accountId:2
+                    imgs:[]
                 }
             }
         }
