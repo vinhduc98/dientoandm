@@ -17,8 +17,8 @@ const app = express_1.default();
 // app.use(fileupload({
 //     useTempFiles:true
 // }))
-console.log(path_1.default.join(__dirname, ".", "uploads"));
-app.use("/uploads", express_1.default.static("uploads"));
+console.log(path_1.default.join('/root/apps/dientoandm', ".", "uploads"));
+app.use("/uploads", express_1.default.static(path_1.default.join('/root/apps/dientoandm', ".", "uploads")));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: "5mb" }));
 app.use(morgan_1.default("dev"));
