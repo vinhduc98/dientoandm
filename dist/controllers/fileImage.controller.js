@@ -102,7 +102,7 @@ class FileImageController {
             fs_1.default.readFile(imageName, (err, imageData) => {
                 if (err) {
                     return res.status(200).send({
-                        status: 1,
+                        status: 0,
                         description: `Không thể đọc file hình :${err}`
                     });
                 }
