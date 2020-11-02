@@ -12,7 +12,7 @@ function FileImageRoute(url, app) {
     app.route(`${url}/UploadImage`).post(fileImage.uploadImage);
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, './root/apps/dientoandm/uploads');
+            cb(null, '../apps/dientoandm/uploads');
         },
         filename: (req, file, cb) => {
             console.log(file);
