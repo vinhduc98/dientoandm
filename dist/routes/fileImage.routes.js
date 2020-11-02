@@ -6,13 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileInageRouteNoauthenticate = exports.FileImageRoute = void 0;
 const fileImage_controller_1 = require("../controllers/fileImage.controller");
 const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const multer = require('multer');
 function FileImageRoute(url, app) {
     const fileImage = new fileImage_controller_1.FileImageController();
     app.route(`${url}/UploadImage`).post(fileImage.uploadImage);
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, path_1.default.join(__dirname, '/uploads/'));
+            fs_1.default.mkdir('uploads/', (err) => {
+                cb(null, 'uploads/');
+            });
         },
         filename: (req, file, cb) => {
             console.log(file);
