@@ -11,8 +11,8 @@ export function FileImageRoute(url:string, app:Express){
 
     const storage = multer.diskStorage({
         destination: (req:any, file:any, cb:any) => {
-            fs.mkdir('./uploads/',(err)=>{
-                cb(null, './uploads/');
+            fs.mkdir('uploads/',(err)=>{
+                cb(null, 'uploads/');
             });
         },
         filename: (req:any, file:any, cb:any) => {
