@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import {FileImageController} from '../controllers/fileImage.controller';
-import path from "path"
+import path from "path";
+import fs from "fs";
 const multer = require('multer');
 
 export function FileImageRoute(url:string, app:Express){
@@ -10,7 +11,9 @@ export function FileImageRoute(url:string, app:Express){
 
     const storage = multer.diskStorage({
         destination: (req:any, file:any, cb:any) => {
-            cb(null, path.join(__dirname, '/uploads/'));
+            fs.mkdir('./uploads/',(err)=>{
+                cb(null, './uploads/');
+            });
         },
         filename: (req:any, file:any, cb:any) => {
             console.log(file);
