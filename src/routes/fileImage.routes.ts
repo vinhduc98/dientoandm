@@ -10,7 +10,7 @@ export function FileImageRoute(url:string, app:Express){
 
     const storage = multer.diskStorage({
         destination: (req:any, file:any, cb:any) => {
-            cb(null, 'uploads/');
+            cb(null, 'uploads');
         },
         filename: (req:any, file:any, cb:any) => {
             console.log(file);
