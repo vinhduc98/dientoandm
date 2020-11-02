@@ -16,6 +16,7 @@ exports.FileImageController = void 0;
 const fs_1 = __importDefault(require("fs"));
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const server_config_1 = require("../config/server.config");
+const server_config_2 = require("../config/server.config");
 let cloudinary = require('cloudinary').v2;
 class FileImageController {
     uploadImage(req, res, next) {
@@ -81,7 +82,7 @@ class FileImageController {
                         });
                     }
                     else {
-                        arrayFile.push(files[i].filename);
+                        arrayFile.push(server_config_2.infoServer.HOST_NAME + "/api/Image/open_image/" + files[i].filename);
                     }
                 }
                 return res.status(200).json({

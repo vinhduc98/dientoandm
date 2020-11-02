@@ -2,6 +2,7 @@ import { Express } from 'express';
 import {FileImageController} from '../controllers/fileImage.controller';
 import path from "path";
 import fs from "fs";
+
 const multer = require('multer');
 
 export function FileImageRoute(url:string, app:Express){

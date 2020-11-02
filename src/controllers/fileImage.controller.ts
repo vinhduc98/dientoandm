@@ -1,6 +1,7 @@
 import fs from 'fs';
 import db from '../database/cookingrecipe';
 import {cloudinaryary} from '../config/server.config';
+import {infoServer} from "../config/server.config"
 let cloudinary = require('cloudinary').v2;
 
 export class FileImageController{
@@ -79,7 +80,7 @@ export class FileImageController{
                     })
                 }
                 else{
-                    arrayFile.push(files[i].filename)
+                    arrayFile.push(infoServer.HOST_NAME+"/api/Image/open_image/"+files[i].filename)
                 }
             }
             return res.status(200).json({
@@ -97,7 +98,7 @@ export class FileImageController{
         fs.readFile(imageName,(err:any, imageData)=>{
             if(err){
                 return res.status(200).send({
-                    status:1,
+                    status:0,
                     description:`Không thể đọc file hình :${err}`
                 })
             }

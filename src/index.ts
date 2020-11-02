@@ -4,13 +4,8 @@ import http from 'http';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from './swagger';
-import Sequelize from 'sequelize';
 import { routes,routesNoauthenticate } from './routes';
 import db from './database/cookingrecipe';
-import fileupload from 'express-fileupload';
-import fs from 'fs';
-import {img} from './config/defaultimg.config'
-import { FunctionHandle } from './functionManage/destroyfilecloudinary';
 import morgan from "morgan"
 
 
