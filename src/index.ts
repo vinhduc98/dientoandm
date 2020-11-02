@@ -19,11 +19,11 @@ let PORT = process.env.PORT || 8000;
 
 const app = express();
 
-app.use(fileupload({
-    useTempFiles:true
-}))
+// app.use(fileupload({
+//     useTempFiles:true
+// }))
 
-
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));
@@ -44,6 +44,8 @@ db.sequelize
 
 routesNoauthenticate(app);
 routes(app);
+
+
 
 let httpServer = new http.Server(app)
 httpServer.listen(PORT, () => {

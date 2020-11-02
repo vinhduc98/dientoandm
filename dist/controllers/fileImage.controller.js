@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileImageController = void 0;
+const fs_1 = __importDefault(require("fs"));
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const server_config_1 = require("../config/server.config");
-let formidable = require('formidable');
 let cloudinary = require('cloudinary').v2;
 class FileImageController {
     uploadImage(req, res, next) {
@@ -68,7 +68,46 @@ class FileImageController {
     }
     uploadImageTest(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            return res.status(200).send("Ok");
+            try {
+                let arrayFile = [];
+                let files = req.files;
+                for (let i = 0; i < files.length; i++) {
+                    let type = files[i].mimetype.split('/')[1].toLowerCase();
+                    if (type !== 'png' && type !== 'jpg' && type !== 'jpeg') {
+                        fs_1.default.unlinkSync(files[i].path);
+                        return res.status(200).send({
+                            status: 0,
+                            description: 'Chúng tôi chỉ chấp nhận định dạng .png .jpg .jpeg'
+                        });
+                    }
+                    else {
+                        arrayFile.push(files[i].filename);
+                    }
+                }
+                return res.status(200).json({
+                    status: 1,
+                    description: 'Ok',
+                    data: arrayFile
+                });
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    }
+    openImage(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let imageName = "uploads/" + req.params.image_name;
+            fs_1.default.readFile(imageName, (err, imageData) => {
+                if (err) {
+                    return res.status(200).send({
+                        status: 1,
+                        description: `Không thể đọc file hình :${err}`
+                    });
+                }
+                res.writeHead(200, { 'Content-Type': 'image/jpeg' });
+                res.end(imageData);
+            });
         });
     }
 }

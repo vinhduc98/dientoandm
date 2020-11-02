@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import {FileImageRoute} from './routes/fileImage.routes';
+import {FileImageRoute,FileInageRouteNoauthenticate} from './routes/fileImage.routes';
 import {AccountRoute,AccountRouteNoauthenticate} from './routes/account.route';
 import {DishRoute,DishRouteNoauthenticate} from './routes/dish.route';
 import {AuthRoute,AuthRouteNoauthenticate} from './routes/auth.route';
@@ -29,4 +29,5 @@ export function routesNoauthenticate(app:Express){
   DishRouteNoauthenticate("/api/Dish",app);
   AccountRouteNoauthenticate("/api/Account",app);
   CommentRouteNoauthenticate("/api/Comment",app);
+  FileInageRouteNoauthenticate("/api/Image",app);
 }

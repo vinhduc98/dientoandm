@@ -30,6 +30,7 @@ function routesNoauthenticate(app) {
     dish_route_1.DishRouteNoauthenticate("/api/Dish", app);
     account_route_1.AccountRouteNoauthenticate("/api/Account", app);
     comment_route_1.CommentRouteNoauthenticate("/api/Comment", app);
+    fileImage_routes_1.FileInageRouteNoauthenticate("/api/Image", app);
 }
 exports.routesNoauthenticate = routesNoauthenticate;
 //# sourceMappingURL=routes.js.map

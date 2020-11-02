@@ -1,8 +1,6 @@
 import fs from 'fs';
 import db from '../database/cookingrecipe';
 import {cloudinaryary} from '../config/server.config';
-let formidable = require('formidable');
-import path from 'path';
 let cloudinary = require('cloudinary').v2;
 
 export class FileImageController{
@@ -66,7 +64,45 @@ export class FileImageController{
     }
 
     async uploadImageTest(req:any, res:any, next:any){
-        return res.status(200).send("Ok");
+        try {
+            let arrayFile:any =[];
+            let files = req.files
+            for(let i=0;i<files.length;i++)
+            {
+                let type = files[i].mimetype.split('/')[1].toLowerCase();
+                if(type!=='png'&&type!=='jpg'&&type!=='jpeg')
+                {
+                    fs.unlinkSync(files[i].path)
+                    return res.status(200).send({
+                        status:0,
+                        description:'Chúng tôi chỉ chấp nhận định dạng .png .jpg .jpeg'
+                    })
+                }
+                else{
+                    arrayFile.push(files[i].filename)
+                }
+            }
+            return res.status(200).json({
+                status:1,
+                description:'Ok',
+                data: arrayFile
+            });
+        } catch (error) {
+            console.error(error);
+        }
     }
 
+    async openImage(req:any, res:any, next:any){
+        let imageName = "uploads/"+req.params.image_name;
+        fs.readFile(imageName,(err:any, imageData)=>{
+            if(err){
+                return res.status(200).send({
+                    status:1,
+                    description:`Không thể đọc file hình :${err}`
+                })
+            }
+            res.writeHead(200, {'Content-Type':'image/jpeg'});
+            res.end(imageData);
+        })
+    }
 }
