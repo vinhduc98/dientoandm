@@ -16,7 +16,6 @@ exports.FileImageController = void 0;
 const fs_1 = __importDefault(require("fs"));
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const server_config_1 = require("../config/server.config");
-const server_config_2 = require("../config/server.config");
 let cloudinary = require('cloudinary').v2;
 class FileImageController {
     uploadImage(req, res, next) {
@@ -70,11 +69,13 @@ class FileImageController {
     uploadImageTest(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                let jwtPayLoad = req.jwtPayLoad;
                 let arrayFile = [];
                 let files = req.files;
                 for (let i = 0; i < files.length; i++) {
                     let type = files[i].mimetype.split('/')[1].toLowerCase();
                     if (type !== 'png' && type !== 'jpg' && type !== 'jpeg') {
+                        console.log(files[i].path);
                         fs_1.default.unlinkSync(files[i].path);
                         return res.status(200).send({
                             status: 0,
@@ -82,7 +83,11 @@ class FileImageController {
                         });
                     }
                     else {
-                        arrayFile.push(server_config_2.infoServer.HOST_NAME + "/api/Image/open_image/" + files[i].filename);
+                        yield cookingrecipe_1.default.Img.create({
+                            url_img: files[i].filename,
+                            createUser: jwtPayLoad.username
+                        });
+                        arrayFile.push(files[i].filename);
                     }
                 }
                 return res.status(200).json({

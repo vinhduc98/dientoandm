@@ -6,7 +6,8 @@ import swaggerUi from 'swagger-ui-express';
 import {swaggerDocument} from './swagger';
 import { routes,routesNoauthenticate } from './routes';
 import db from './database/cookingrecipe';
-import morgan from "morgan"
+import morgan from "morgan";
+import cache from 'memory-cache';
 
 
 

@@ -12,6 +12,7 @@ exports.configToken = {
 };
 exports.infoServer = {
     IP: '172.105.117.203',
-    HOST_NAME: 'http://cookingrecipe.ml:8000'
+    HOST_NAME: 'http://cookingrecipe.ml:8000',
+    LOCAL_NAME: 'http://localhost:8000'
 };
 //# sourceMappingURL=server.config.js.map

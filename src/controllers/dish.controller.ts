@@ -2,6 +2,8 @@ import db from '../database/cookingrecipe'
 import {ErrorGeneral} from '../description/description';
 import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
 import {img} from '../config/defaultimg.config';
+import fs from 'fs';
+
 export class DishController{
     async createDish(req:any, res:any, next:any){
         const body =req.body;
@@ -90,22 +92,12 @@ export class DishController{
                 let listimg = await db.DishImg.findAll({where:{
                     dishId:getAlldish[i].id
                 }});
-                // let listcmt = await db.Comment.findAll({
-                //     where:{
-
-                //         dishId:getAlldish[i].id
-                //     },
-                //     order:[['createdAt','DESC']]
-                // })
 
                 for(let m=0;m<listimg.length;m++)
                 {
                     dish.imgs.push(listimg[m].getDataValue('imgUrlImg'));
                 }
-                // for(let n=0;n<listcmt.length;n++)
-                // {
-                //     dish.comments.push({author:listcmt[n].author, rating:listcmt[n].rating, comment:listcmt[n].comment, isMember:listcmt[n].isMember});
-                // }
+
                 if(dishes.indexOf(dish)<=-1)
                 {
                     dishes.push(dish);
@@ -199,7 +191,7 @@ export class DishController{
                 {
                     if(ArrDishImg.indexOf(getImgbyuser[i].url_img)<=-1&&getImgbyuser[i].url_img!==avatar.avatar)
                     {
-                        functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
+                        fs.unlinkSync("uploads"+getImgbyuser[i].url_img)
                         await db.Img.destroy({
                             where:{url_img:getImgbyuser[i].url_img},transaction
                         })
@@ -258,6 +250,7 @@ export class DishController{
                     if(getImgbyuser[i].url_img!==avatar.avatar)
                     {
                         // Xóa tất cả hình tron Img
+                        fs.unlinkSync("uploads"+getImgbyuser[i].url_img);
                         functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
                         await db.Img.destroy({
                             where:{

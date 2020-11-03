@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import {ErrorGeneral} from '../description/description';
 import {img} from '../config/defaultimg.config';
 import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
+import fs from 'fs';
 
 export class AccountController{
     async createAccount(req:any, res:any, next:any){
@@ -130,7 +131,7 @@ export class AccountController{
                 // iconlogin là icon mặc định không được xóa ở server cũng như db
                 if(oldAvatar!==img.iconlogin)
                 {
-                    functionHandle.DestroyedFileImgOnCloudinary(oldAvatar);
+                    fs.unlinkSync("uploads"+oldAvatar);
 
                     await db.Img.destroy({where:{
                         url_img:oldAvatar

@@ -48,7 +48,7 @@ db.Comment.belongsTo(db.Dish);
 db.Dish.hasMany(db.Comment);
 // Map quan hệ giữa Dish và img
 db.Dish.belongsToMany(db.Img, {
-    through: "DishImg",
+    through: "dishimg",
     timestamps: false,
 });
 // Map quan hệ giữa account và dish (làm chức năng favorite)

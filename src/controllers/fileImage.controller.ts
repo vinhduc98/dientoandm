@@ -1,8 +1,9 @@
 import fs from 'fs';
 import db from '../database/cookingrecipe';
 import {cloudinaryary} from '../config/server.config';
-import {infoServer} from "../config/server.config"
+import {infoServer} from "../config/server.config";
 let cloudinary = require('cloudinary').v2;
+import cache from "memory-cache";
 
 export class FileImageController{
 
@@ -66,6 +67,7 @@ export class FileImageController{
 
     async uploadImageTest(req:any, res:any, next:any){
         try {
+            let jwtPayLoad = req.jwtPayLoad;
             let arrayFile:any =[];
             let files = req.files
             for(let i=0;i<files.length;i++)
@@ -73,6 +75,7 @@ export class FileImageController{
                 let type = files[i].mimetype.split('/')[1].toLowerCase();
                 if(type!=='png'&&type!=='jpg'&&type!=='jpeg')
                 {
+                    console.log(files[i].path);
                     fs.unlinkSync(files[i].path)
                     return res.status(200).send({
                         status:0,
@@ -80,7 +83,11 @@ export class FileImageController{
                     })
                 }
                 else{
-                    arrayFile.push(infoServer.HOST_NAME+"/api/Image/open_image/"+files[i].filename)
+                    await db.Img.create({
+                      url_img:files[i].filename,
+                      createUser:jwtPayLoad.username
+                    })
+                    arrayFile.push(files[i].filename)
                 }
             }
             return res.status(200).json({
