@@ -12,12 +12,15 @@ const swagger_1 = require("./swagger");
 const routes_1 = require("./routes");
 const cookingrecipe_1 = __importDefault(require("./database/cookingrecipe"));
 const morgan_1 = __importDefault(require("morgan"));
+const body_parser_1 = __importDefault(require("body-parser"));
 let PORT = process.env.PORT || 8000;
 const app = express_1.default();
 // app.use(fileupload({
 //     useTempFiles:true
 // }))
 // app.use('/uploads', express.static('uploads'));
+app.use(body_parser_1.default.json());
+app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json({ limit: "5mb" }));
 app.use(morgan_1.default("dev"));

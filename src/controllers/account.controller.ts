@@ -85,7 +85,6 @@ export class AccountController{
     }
 
     async changeAvatar(req:any, res:any, next:any){
-        let functionHandle = new FunctionHandle();
         let body =req.body;
         let jwtPayLoad = req.jwtPayLoad;
         let transaction = await db.sequelize.transaction();
@@ -131,7 +130,7 @@ export class AccountController{
                 // iconlogin là icon mặc định không được xóa ở server cũng như db
                 if(oldAvatar!==img.iconlogin)
                 {
-                    fs.unlinkSync("uploads"+oldAvatar);
+                    fs.unlinkSync("uploads/"+oldAvatar);
 
                     await db.Img.destroy({where:{
                         url_img:oldAvatar

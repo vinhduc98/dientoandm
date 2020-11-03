@@ -18,7 +18,7 @@ const checkregex_1 = require("../functionManage/checkregex");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const description_1 = require("../description/description");
 const defaultimg_config_1 = require("../config/defaultimg.config");
-const destroyfilecloudinary_1 = require("../functionManage/destroyfilecloudinary");
+const fs_1 = __importDefault(require("fs"));
 class AccountController {
     createAccount(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -96,7 +96,6 @@ class AccountController {
     }
     changeAvatar(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            let functionHandle = new destroyfilecloudinary_1.FunctionHandle();
             let body = req.body;
             let jwtPayLoad = req.jwtPayLoad;
             let transaction = yield cookingrecipe_1.default.sequelize.transaction();
@@ -137,7 +136,7 @@ class AccountController {
                     });
                     // iconlogin là icon mặc định không được xóa ở server cũng như db
                     if (oldAvatar !== defaultimg_config_1.img.iconlogin) {
-                        functionHandle.DestroyedFileImgOnCloudinary(oldAvatar);
+                        fs_1.default.unlinkSync("uploads/" + oldAvatar);
                         yield cookingrecipe_1.default.Img.destroy({ where: {
                                 url_img: oldAvatar
                             }, transaction });

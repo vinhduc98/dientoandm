@@ -39,7 +39,7 @@
 
 
 export const dbcookingrecipe = {
-    HOST: "172.104.168.133",
+    HOST: "139.162.113.35",
     USER: "dientoandm",
     PASSWORD: "dientoandm",
     DB:"dbcookingrecipe", // cookingrecipe

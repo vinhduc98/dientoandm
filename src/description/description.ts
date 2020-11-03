@@ -84,7 +84,8 @@ export const ErrorGeneral = async (err:any,status:number ,req:any, res:any, next
             return res.status(status).send(
                 {
                     status:0,
-                    description:`Lỗi server`
+                    description:`Lỗi server`,
+                    err
                 });
         }
     }

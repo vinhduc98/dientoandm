@@ -25,7 +25,7 @@ function FileImageRoute(url, app) {
     const upload = multer({ storage, limits: {
             fileSize: 1024 * 1024 * 5
         } });
-    app.route(`${url}/UploadImageTest`).post(upload.array('image'), fileImage.uploadImageTest);
+    app.route(`${url}/UploadImageNew`).post(upload.array('image'), fileImage.uploadImageTest);
 }
 exports.FileImageRoute = FileImageRoute;
 function FileInageRouteNoauthenticate(url, app) {

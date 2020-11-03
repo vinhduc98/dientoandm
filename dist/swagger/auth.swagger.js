@@ -44,7 +44,6 @@ exports.login = {
                             name: "tên account",
                             type: 1,
                             username: "username",
-                            avatar: "https://res.cloudinary.com/adsun/image/upload/v1601212865/wxnqvhz9ye89bqwaj7xg.png",
                             token: "mã accesstoken"
                         }
                     }

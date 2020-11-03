@@ -26,8 +26,7 @@ exports.getAlldish = {
                                 price: "Giá",
                                 commentState: 1,
                                 accountId: "tên account post dish lên",
-                                imgs: ["url_img1", "url_img2", "url_img3"],
-                                comments: ["comment1, comment2, comment3"]
+                                imgs: ["img_name", "img_name1"]
                             }
                         ]
                     }

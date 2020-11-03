@@ -38,7 +38,7 @@ exports.dbcookingrecipe = void 0;
 //     },
 // }
 exports.dbcookingrecipe = {
-    HOST: "172.104.168.133",
+    HOST: "139.162.113.35",
     USER: "dientoandm",
     PASSWORD: "dientoandm",
     DB: "dbcookingrecipe",

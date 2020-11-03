@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DishController = void 0;
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const description_1 = require("../description/description");
-const destroyfilecloudinary_1 = require("../functionManage/destroyfilecloudinary");
+const defaultimg_config_1 = require("../config/defaultimg.config");
+const fs_1 = __importDefault(require("fs"));
 class DishController {
     createDish(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -121,7 +122,6 @@ class DishController {
             let dishId = req.params.dishId;
             let jwtPayLoad = req.jwtPayLoad;
             let body = req.body;
-            let functionHandle = new destroyfilecloudinary_1.FunctionHandle();
             let transaction = yield cookingrecipe_1.default.sequelize.transaction();
             try {
                 yield cookingrecipe_1.default.Dish.update({
@@ -137,58 +137,59 @@ class DishController {
                         id: dishId
                     }, transaction
                 });
-                if (body.imgs !== undefined) {
-                    yield cookingrecipe_1.default.DishImg.destroy({ where: {
+                let imgs = body.imgs;
+                if (defaultimg_config_1.img !== undefined) {
+                    let arrDishImg = [];
+                    let imgDish = yield cookingrecipe_1.default.DishImg.findAll({
+                        where: {
                             dishId
-                        }, transaction });
-                    let imgs = body.imgs;
-                    if (imgs.length > 0) {
-                        for (let i = 0; i < imgs.length; i++) {
-                            let getImg = yield cookingrecipe_1.default.Img.findOne({ where: {
-                                    url_img: imgs[i]
-                                } });
-                            if (getImg !== null) {
-                                // Tạo lại Dishimg
+                        }
+                    });
+                    // Xóa hết danh sách DishImg
+                    yield cookingrecipe_1.default.DishImg.destroy({
+                        where: {
+                            dishId
+                        }, transaction
+                    });
+                    if (imgs.length >= 0) {
+                        for (let i = 0; i < imgDish.length; i++) {
+                            // Nếu imgDish không nằm trong imgs
+                            if (imgs.indexOf(imgDish[i].imgUrlImg) <= -1) {
+                                // Xóa tất cả các img cũ
+                                yield cookingrecipe_1.default.Img.destroy({
+                                    where: {
+                                        url_img: imgDish[i].imgUrlImg
+                                    }, transaction
+                                });
+                                // Xóa tất của các DishImg cũ
+                                yield cookingrecipe_1.default.DishImg.destroy({
+                                    where: {
+                                        imgUrlImg: imgDish[i].imgUrlImg
+                                    }, transaction
+                                });
+                                // Xóa file img
+                                fs_1.default.unlinkSync("uploads/" + imgDish[i].imgUrlImg);
+                            }
+                        }
+                        // Lấy lại danh sách ImgDish sau khi đã thanh lọc
+                        let imgDishSub = yield cookingrecipe_1.default.DishImg.findAll({
+                            where: {
+                                dishId
+                            }
+                        });
+                        for (let k = 0; k < imgDishSub.length; k++) {
+                            arrDishImg.push(imgDishSub[k]);
+                        }
+                        // imgDishSub.forEach(async(element:any) => {
+                        //     arrDishImg.push(element.imgUrlImg)
+                        // });
+                        for (let j = 0; j < imgs.length; j++) {
+                            if (arrDishImg.indexOf(imgs[j]) <= -1) {
                                 yield cookingrecipe_1.default.DishImg.create({
                                     dishId,
-                                    imgUrlImg: getImg.url_img
+                                    imgUrlImg: imgs[j]
                                 }, { transaction });
                             }
-                            else {
-                                return res.status(200).send({
-                                    status: 0,
-                                    description: 'Hình ảnh chưa được cập nhật lên server - yêu cầu kiểm tra lại'
-                                });
-                            }
-                        }
-                    }
-                    // Xóa ảnh từ server quản lý ảnh
-                    let ArrDishImg = [];
-                    let avatar = yield cookingrecipe_1.default.Account.findOne({
-                        attributes: ['avatar'],
-                        where: { id: jwtPayLoad.id }
-                    });
-                    let getImgbyuser = yield cookingrecipe_1.default.Img.findAll({
-                        attributes: ['url_img'],
-                        where: {
-                            createUser: jwtPayLoad.username
-                        }
-                    });
-                    let getDishimg = yield cookingrecipe_1.default.DishImg.findAll({
-                        attributes: ['imgUrlImg'],
-                        where: {
-                            dishId
-                        }
-                    });
-                    getDishimg.forEach((element) => {
-                        ArrDishImg.push(element.imgUrlImg);
-                    });
-                    for (let i = 0; i < getImgbyuser.length; i++) {
-                        if (ArrDishImg.indexOf(getImgbyuser[i].url_img) <= -1 && getImgbyuser[i].url_img !== avatar.avatar) {
-                            functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
-                            yield cookingrecipe_1.default.Img.destroy({
-                                where: { url_img: getImgbyuser[i].url_img }, transaction
-                            });
                         }
                     }
                 }
@@ -209,8 +210,6 @@ class DishController {
     deleteDish(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             let dishId = req.params.dishId;
-            let functionHandle = new destroyfilecloudinary_1.FunctionHandle();
-            let jwtPayLoad = req.jwtPayLoad;
             let transaction = yield cookingrecipe_1.default.sequelize.transaction();
             try {
                 let destroyDish = yield cookingrecipe_1.default.Dish.destroy({
@@ -220,33 +219,25 @@ class DishController {
                 });
                 if (destroyDish === 1) {
                     // Xóa bảng dishImg
+                    let getDishImg = yield cookingrecipe_1.default.DishImg.findAll({
+                        attributes: ['imgUrlImg'],
+                        where: {
+                            dishId
+                        }
+                    });
+                    for (let i = 0; i < getDishImg.length; i++) {
+                        yield cookingrecipe_1.default.Img.destroy({
+                            where: {
+                                url_img: getDishImg[i].imgUrlImg
+                            }
+                        });
+                        fs_1.default.unlinkSync("uploads/" + getDishImg[i].imgUrlImg);
+                    }
                     yield cookingrecipe_1.default.DishImg.destroy({
                         where: {
                             dishId
-                        }, transaction
-                    });
-                    // Lấy tất cả hình do user tạo
-                    let getImgbyuser = yield cookingrecipe_1.default.Img.findAll({
-                        where: {
-                            createUser: jwtPayLoad.username
                         }
                     });
-                    // Lấy avatar
-                    let avatar = yield cookingrecipe_1.default.Account.findOne({
-                        attributes: ['avatar'],
-                        where: { id: jwtPayLoad.id }
-                    });
-                    for (let i = 0; i < getImgbyuser.length; i++) {
-                        if (getImgbyuser[i].url_img !== avatar.avatar) {
-                            // Xóa tất cả hình tron Img
-                            functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
-                            yield cookingrecipe_1.default.Img.destroy({
-                                where: {
-                                    url_img: getImgbyuser[i].url_img
-                                }, transaction
-                            });
-                        }
-                    }
                 }
                 transaction.commit();
                 return res.status(200).send({

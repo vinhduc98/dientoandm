@@ -8,6 +8,8 @@ import { routes,routesNoauthenticate } from './routes';
 import db from './database/cookingrecipe';
 import morgan from "morgan";
 import cache from 'memory-cache';
+import bodyParser from "body-parser";
+import fs from "fs";
 
 
 
@@ -19,6 +21,8 @@ const app = express();
 //     useTempFiles:true
 // }))
 // app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));

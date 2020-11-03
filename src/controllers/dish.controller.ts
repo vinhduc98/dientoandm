@@ -33,6 +33,7 @@ export class DishController{
                             url_img:imgs[i]
                         },transaction
                     })
+
                     if(getImg===null)
                     {
                         return res.status(200).send({
@@ -117,7 +118,6 @@ export class DishController{
         let dishId = req.params.dishId;
         let jwtPayLoad = req.jwtPayLoad;
         let body =req.body;
-        let functionHandle = new FunctionHandle();
         let transaction = await db.sequelize.transaction();
         try {
             await db.Dish.update({
@@ -133,71 +133,72 @@ export class DishController{
                     id:dishId
                 },transaction
             })
-
-            if(body.imgs!==undefined)
+            let imgs = body.imgs;
+            if(img!==undefined)
             {
-                await db.DishImg.destroy({where:{
-                    dishId
-                },transaction})
-                let imgs = body.imgs;
-                if(imgs.length>0)
-                {
-                    for(let i=0;i<imgs.length;i++)
-                    {
-                        let getImg = await db.Img.findOne({where:{
-                            url_img:imgs[i]
-                        }})
-                        if(getImg!==null)
-                        {
-                            // Tạo lại Dishimg
-                            await db.DishImg.create({
-                                dishId,
-                                imgUrlImg:getImg.url_img
-                            },{transaction})
-
-                        }
-                        else{
-                            return res.status(200).send({
-                                status:0,
-                                description:'Hình ảnh chưa được cập nhật lên server - yêu cầu kiểm tra lại'
-                            })
-                        }
-                    }
-                }
-                // Xóa ảnh từ server quản lý ảnh
-                let ArrDishImg:any=[];
-                let avatar = await db.Account.findOne({
-                    attributes:['avatar'],
-                    where:{id:jwtPayLoad.id}
-                });
-
-                let getImgbyuser = await db.Img.findAll({
-                    attributes:['url_img'],
-                    where:{
-                        createUser:jwtPayLoad.username
-                    }
-                })
-
-                let getDishimg = await db.DishImg.findAll({
-                    attributes:['imgUrlImg'],
+                let arrDishImg:any =[];
+                let imgDish:any = await db.DishImg.findAll({
                     where:{
                         dishId
                     }
                 })
-                getDishimg.forEach((element:any) => {
-                    ArrDishImg.push(element.imgUrlImg);
-                });
-                for(let i=0;i<getImgbyuser.length;i++)
+
+                // Xóa hết danh sách DishImg
+                await db.DishImg.destroy({
+                    where:{
+                        dishId
+                    },transaction
+                })
+                if(imgs.length>=0)
                 {
-                    if(ArrDishImg.indexOf(getImgbyuser[i].url_img)<=-1&&getImgbyuser[i].url_img!==avatar.avatar)
+                    for(let i=0;i<imgDish.length;i++)
                     {
-                        fs.unlinkSync("uploads"+getImgbyuser[i].url_img)
-                        await db.Img.destroy({
-                            where:{url_img:getImgbyuser[i].url_img},transaction
-                        })
+                        // Nếu imgDish không nằm trong imgs
+                        if(imgs.indexOf(imgDish[i].imgUrlImg)<=-1)
+                        {
+                            // Xóa tất cả các img cũ
+                            await db.Img.destroy({
+                                where:{
+                                    url_img:imgDish[i].imgUrlImg
+                                },transaction
+                            })
+                            // Xóa tất của các DishImg cũ
+                            await db.DishImg.destroy({
+                                where:{
+                                    imgUrlImg:imgDish[i].imgUrlImg
+                                },transaction
+                            })
+                            // Xóa file img
+                            fs.unlinkSync("uploads/"+imgDish[i].imgUrlImg)
+                        }
+                    }
+                    // Lấy lại danh sách ImgDish sau khi đã thanh lọc
+                    let imgDishSub =  await db.DishImg.findAll({
+                        where:{
+                            dishId
+                        }
+                    })
+
+                    for(let k =0;k<imgDishSub.length;k++)
+                    {
+                        arrDishImg.push(imgDishSub[k]);
+                    }
+                    // imgDishSub.forEach(async(element:any) => {
+                    //     arrDishImg.push(element.imgUrlImg)
+                    // });
+
+
+                    for(let j =0;j<imgs.length;j++)
+                    {
+                        if(arrDishImg.indexOf(imgs[j])<=-1)
+                        {
+                            await db.DishImg.create({
+                                dishId,
+                                imgUrlImg:imgs[j]
+                            },{transaction})
+                        }
                     }
                 }
-
             }
             transaction.commit();
             return res.status(200).send({
@@ -215,9 +216,8 @@ export class DishController{
     }
 
     async deleteDish(req:any, res:any, next:any){
+
         let dishId = req.params.dishId;
-        let functionHandle = new FunctionHandle();
-        let jwtPayLoad = req.jwtPayLoad;
         let transaction = await db.sequelize.transaction();
         try {
             let destroyDish = await db.Dish.destroy({
@@ -229,36 +229,29 @@ export class DishController{
             if(destroyDish===1)
             {
                 // Xóa bảng dishImg
+                let getDishImg:any = await db.DishImg.findAll({
+                    attributes:['imgUrlImg'],
+                    where:{
+                        dishId
+                    }
+                })
+                for(let i=0;i<getDishImg.length;i++)
+                {
+                    await db.Img.destroy({
+                        where:{
+                                url_img:getDishImg[i].imgUrlImg
+                        }
+                    })
+
+                    fs.unlinkSync("uploads/"+getDishImg[i].imgUrlImg);
+                }
+
                 await db.DishImg.destroy({
                     where:{
                         dishId
-                    },transaction
-                })
-                // Lấy tất cả hình do user tạo
-                let getImgbyuser = await db.Img.findAll({
-                    where:{
-                        createUser:jwtPayLoad.username
                     }
                 })
-                // Lấy avatar
-                let avatar = await db.Account.findOne({
-                    attributes:['avatar'],
-                    where:{id:jwtPayLoad.id}
-                });
-                for(let i=0;i<getImgbyuser.length;i++)
-                {
-                    if(getImgbyuser[i].url_img!==avatar.avatar)
-                    {
-                        // Xóa tất cả hình tron Img
-                        fs.unlinkSync("uploads"+getImgbyuser[i].url_img);
-                        functionHandle.DestroyedFileImgOnCloudinary(getImgbyuser[i].url_img);
-                        await db.Img.destroy({
-                            where:{
-                                url_img:getImgbyuser[i].url_img
-                            },transaction
-                        })
-                    }
-                }
+
             }
             transaction.commit();
             return res.status(200).send({

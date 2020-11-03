@@ -1,1 +1,1 @@
-{"version":3,"file":"defaultimg.config.js","sourceRoot":"","sources":["../../src/config/defaultimg.config.ts"],"names":[],"mappings":";;;AAAa,QAAA,GAAG,GAAG;IACf,SAAS,EAAC,oFAAoF;CACjG,CAAA"}
+{"version":3,"file":"defaultimg.config.js","sourceRoot":"","sources":["../../src/config/defaultimg.config.ts"],"names":[],"mappings":";;;AAAa,QAAA,GAAG,GAAG;IACf,SAAS,EAAC,mBAAmB;CAChC,CAAA"}

@@ -93,6 +93,9 @@ exports.swaggerDocument = {
         },
         "/api/Image/UploadImage": {
             post: file_swagger_1.uploadImage
+        },
+        "/api/Image/UploadImageNew": {
+            post: file_swagger_1.uploadImageNew
         }
     }
 };

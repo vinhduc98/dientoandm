@@ -1,5 +1,5 @@
 import {login,logout} from "./swagger/auth.swagger";
-import {uploadImage} from "./swagger/file.swagger";
+import {uploadImage,uploadImageNew} from "./swagger/file.swagger";
 import {getAlldish,createDish,updateDish,deleteDish} from "./swagger/dish.swagger";
 import {createAccount,getAccountInfo,changeAvatar,updateAccount,changePassword} from "./swagger/account.swagger";
 import {createComment,getCommentByDishId} from "./swagger/comment.swagger";
@@ -90,6 +90,9 @@ export const swaggerDocument ={
       },
       "/api/Image/UploadImage":{
         post: uploadImage
+      },
+      "/api/Image/UploadImageNew":{
+        post: uploadImageNew
       }
     }
 

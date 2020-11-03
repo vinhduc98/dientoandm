@@ -74,7 +74,8 @@ exports.ErrorGeneral = (err, status, req, res, next) => __awaiter(void 0, void 0
         else {
             return res.status(status).send({
                 status: 0,
-                description: `Lỗi server`
+                description: `Lỗi server`,
+                err
             });
         }
     }

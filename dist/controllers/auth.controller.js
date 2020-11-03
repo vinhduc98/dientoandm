@@ -67,7 +67,6 @@ class AuthController {
                         name: account.name,
                         type: account.type,
                         username: account.username,
-                        avatar: account.avatar,
                         token: accesstoken
                     }
                 });
