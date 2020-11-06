@@ -1,6 +1,7 @@
 import db from '../database/cookingrecipe'
 import {ErrorGeneral} from '../description/description';
 import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
+import Sequelize from "sequelize";
 
 export class CommentController{
     async createComment(req:any, res:any, next:any){
@@ -65,17 +66,78 @@ export class CommentController{
     async getCommentByDishId(req:any, res:any, next:any){
         try {
             let dishId = req.params.dishId;
-            let comments = await db.Comment.findAll({
+            let comments:any =[];
+            let childComment:any=[];
+            let cmt:any =[];
+            let parentComments = await db.Comment.findAll({
                 where:{
-                    dishId
+                    dishId,
+                    isChildren:0
                 },
                 order:[['updatedAt','DESC']]
             })
+            for(let i=0;i<parentComments.length;i++)
+            {
+                let objectParentComments:any = {
+                    id:parentComments[i].id,
+                    rating:parentComments[i].rating,
+                    comment:parentComments[i].comment,
+                    author:parentComments[i].author,
+                    isMember:parentComments[i].isMember,
+                    isChildren:parentComments[i].getDataValue("isChildren"),
+                    createdAt:parentComments[i].getDataValue("createdAt"),
+                    dishId:parentComments[i].getDataValue("dishId")
+                }
+                comments.push(objectParentComments);
+            }
+
+            let childrenComments = await db.Comment.findAll({
+                where:{
+                    dishId,
+                    isChildren:{
+                       [Sequelize.Op.gt]:[0]
+                    }
+                },
+                order:[['isChildren','ASC']]
+            })
+            for(let j =0;j<childrenComments.length;j++)
+            {
+                let objectChildrenComments:any = {
+                    id:childrenComments[j].id,
+                    rating:childrenComments[j].rating,
+                    comment:childrenComments[j].comment,
+                    author:childrenComments[j].author,
+                    isMember:childrenComments[j].isMember,
+                    isChildren:childrenComments[j].getDataValue("isChildren"),
+                    createdAt:childrenComments[j].getDataValue("createdAt"),
+                    dishId:childrenComments[j].getDataValue("dishId")
+                }
+                childComment.push(objectChildrenComments);
+            }
+
+            for(let k=0;k<comments.length;k++)
+            {
+                for(let h =0;h<childComment.length;h++)
+                {
+                    if(cmt.indexOf(comments[k])<=-1)
+                    {
+                        cmt.push(comments[k]);
+                    }
+
+                    if(comments[k].id===childComment[h].isChildren)
+                    {
+                        if(cmt.indexOf(childComment[h])<=-1)
+                        {
+                            cmt.push(childComment[h])
+                        }
+                    }
+                }
+            }
 
             return res.status(200).send({
                 status:1,
                 description:"Ok",
-                comments
+                comments:cmt
             })
         } catch (error) {
             ErrorGeneral(error,200,req,res,next);
