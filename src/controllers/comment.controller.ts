@@ -76,6 +76,7 @@ export class CommentController{
                 },
                 order:[['updatedAt','DESC']]
             })
+
             for(let i=0;i<parentComments.length;i++)
             {
                 let objectParentComments:any = {
@@ -90,7 +91,7 @@ export class CommentController{
                 }
                 comments.push(objectParentComments);
             }
-
+            console.log(comments);
             let childrenComments = await db.Comment.findAll({
                 where:{
                     dishId,
@@ -117,21 +118,28 @@ export class CommentController{
 
             for(let k=0;k<comments.length;k++)
             {
-                for(let h =0;h<childComment.length;h++)
+                if(childComment.length>0)
                 {
-                    if(cmt.indexOf(comments[k])<=-1)
+                    for(let h =0;h<childComment.length;h++)
                     {
-                        cmt.push(comments[k]);
-                    }
-
-                    if(comments[k].id===childComment[h].isChildren)
-                    {
-                        if(cmt.indexOf(childComment[h])<=-1)
+                        if(cmt.indexOf(comments[k])<=-1)
                         {
-                            cmt.push(childComment[h])
+                            cmt.push(comments[k]);
+                        }
+                        console.log(cmt);
+                        if(comments[k].id===childComment[h].isChildren)
+                        {
+                            if(cmt.indexOf(childComment[h])<=-1)
+                            {
+                                cmt.push(childComment[h])
+                            }
                         }
                     }
                 }
+                else{
+                    cmt.push(comments[k]);
+                }
+
             }
 
             return res.status(200).send({

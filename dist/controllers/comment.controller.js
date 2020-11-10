@@ -99,6 +99,7 @@ class CommentController {
                     };
                     comments.push(objectParentComments);
                 }
+                console.log(comments);
                 let childrenComments = yield cookingrecipe_1.default.Comment.findAll({
                     where: {
                         dishId,
@@ -122,15 +123,21 @@ class CommentController {
                     childComment.push(objectChildrenComments);
                 }
                 for (let k = 0; k < comments.length; k++) {
-                    for (let h = 0; h < childComment.length; h++) {
-                        if (cmt.indexOf(comments[k]) <= -1) {
-                            cmt.push(comments[k]);
-                        }
-                        if (comments[k].id === childComment[h].isChildren) {
-                            if (cmt.indexOf(childComment[h]) <= -1) {
-                                cmt.push(childComment[h]);
+                    if (childComment.length > 0) {
+                        for (let h = 0; h < childComment.length; h++) {
+                            if (cmt.indexOf(comments[k]) <= -1) {
+                                cmt.push(comments[k]);
+                            }
+                            console.log(cmt);
+                            if (comments[k].id === childComment[h].isChildren) {
+                                if (cmt.indexOf(childComment[h]) <= -1) {
+                                    cmt.push(childComment[h]);
+                                }
                             }
                         }
+                    }
+                    else {
+                        cmt.push(comments[k]);
                     }
                 }
                 return res.status(200).send({
