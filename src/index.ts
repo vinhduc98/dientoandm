@@ -10,8 +10,8 @@ import morgan from "morgan";
 import cache from 'memory-cache';
 import bodyParser from "body-parser";
 import fs from "fs";
-
-
+import axios from "axios";
+import https from 'https'
 
 let PORT = process.env.PORT || 8000;
 
@@ -31,6 +31,11 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(cors());
 app.options("*", cors());
+
+// const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+// axios.get("https://image.ap-south-1.linodeobjects.com/abc.jpg",{httpsAgent}).then(rs=>{
+//     console.log(rs);
+// })
 
 db.sequelize
     .sync ({force:false, alter: true})

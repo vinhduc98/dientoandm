@@ -33,6 +33,7 @@
     "@types/morgan": "^1.9.1",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/validator": "^13.1.0",
+    "axios": "^0.21.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.23.0",

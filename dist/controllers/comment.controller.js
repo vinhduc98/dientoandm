@@ -151,6 +151,27 @@ class CommentController {
             }
         });
     }
+    getCommentByCommentId(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let id = req.params.commentId;
+                let comment = yield cookingrecipe_1.default.Comment.findAll({
+                    attributes: ['id', 'rating', 'comment', 'author', 'isMember', 'isChildren', 'createdAt'],
+                    where: {
+                        id
+                    }
+                });
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok",
+                    commentChildren: comment
+                });
+            }
+            catch (error) {
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
 }
 exports.CommentController = CommentController;
 //# sourceMappingURL=comment.controller.js.map

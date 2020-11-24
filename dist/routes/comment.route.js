@@ -6,6 +6,7 @@ function CommentRouteNoauthenticate(url, app) {
     const cmt = new comment_controller_1.CommentController();
     app.route(`${url}/createComment`).post(cmt.createComment);
     app.route(`${url}/getCommentByDishId/:dishId`).get(cmt.getCommentByDishId);
+    app.route(`${url}/getCommentByCommentId/:commentId`).get(cmt.getCommentByCommentId);
 }
 exports.CommentRouteNoauthenticate = CommentRouteNoauthenticate;
 //# sourceMappingURL=comment.route.js.map

@@ -29,6 +29,10 @@ app.set("views", path_1.default.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(cors_1.default());
 app.options("*", cors_1.default());
+// const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+// axios.get("https://image.ap-south-1.linodeobjects.com/abc.jpg",{httpsAgent}).then(rs=>{
+//     console.log(rs);
+// })
 cookingrecipe_1.default.sequelize
     .sync({ force: false, alter: true })
     .then(() => {

@@ -151,4 +151,23 @@ export class CommentController{
             ErrorGeneral(error,200,req,res,next);
         }
     }
+
+    async getCommentByCommentId(req:any, res: any, next:any ){
+        try {
+            let id = req.params.commentId;
+            let comment =await db.Comment.findAll({
+                attributes:['id','rating','comment','author','isMember', 'isChildren','createdAt'],
+                where:{
+                    id
+                }
+            })
+            return res.status(200).send({
+                status:1,
+                description:"Ok",
+                commentChildren:comment
+            })
+        } catch (error) {
+            ErrorGeneral(error,200,req,res,next);
+        }
+    }
 }
