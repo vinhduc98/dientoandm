@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import {AccountController} from '../controllers/account.controller'
+import {AccountController} from '../controllers/account.controller';
 import {checkJWT,checkJWTDb} from '../middleswares/checkJWT.middlesware';
 
 export function AccountRoute(url:string, app:Express){

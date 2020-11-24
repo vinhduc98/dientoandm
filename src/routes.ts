@@ -7,6 +7,7 @@ import {CommentRouteNoauthenticate} from './routes/comment.route';
 import {PermissionRoute} from './routes/permission.route';
 import {NotifyRoute} from './routes/notify.route';
 import {checkJWT,checkJWTDb} from './middleswares/checkJWT.middlesware';
+import {FavoriteRouteNoauthenticate} from './routes/favorite.route'
 
 export function routes(app: Express) {
     app.route("/").get((req, res) => {
@@ -22,12 +23,13 @@ export function routes(app: Express) {
 }
 
 export function routesNoauthenticate(app:Express){
-  app.route("/").get((req, res) => {
-    res.render("index");
-  });
-  AuthRouteNoauthenticate("/api/Auth",app);
-  DishRouteNoauthenticate("/api/Dish",app);
-  AccountRouteNoauthenticate("/api/Account",app);
-  CommentRouteNoauthenticate("/api/Comment",app);
-  FileInageRouteNoauthenticate("/api/Image",app);
+    app.route("/").get((req, res) => {
+      res.render("index");
+    });
+    AuthRouteNoauthenticate("/api/Auth",app);
+    DishRouteNoauthenticate("/api/Dish",app);
+    AccountRouteNoauthenticate("/api/Account",app);
+    CommentRouteNoauthenticate("/api/Comment",app);
+    FileInageRouteNoauthenticate("/api/Image",app);
+    FavoriteRouteNoauthenticate("/api/Favorite",app);
 }
