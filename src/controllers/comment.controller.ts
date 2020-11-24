@@ -158,7 +158,7 @@ export class CommentController{
             let comment =await db.Comment.findAll({
                 attributes:['id','rating','comment','author','isMember', 'isChildren','createdAt'],
                 where:{
-                    id
+                    isChildren:id
                 }
             })
             return res.status(200).send({

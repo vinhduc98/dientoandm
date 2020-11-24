@@ -158,7 +158,7 @@ class CommentController {
                 let comment = yield cookingrecipe_1.default.Comment.findAll({
                     attributes: ['id', 'rating', 'comment', 'author', 'isMember', 'isChildren', 'createdAt'],
                     where: {
-                        id
+                        isChildren: id
                     }
                 });
                 return res.status(200).send({
