@@ -36,7 +36,7 @@ class DishController {
                     accountId: jwt.id
                 });
                 const imgs = body.imgs;
-                if (imgs.length > 0) {
+                if (imgs.length > 0 && imgs.indexOf("") <= -1) {
                     for (let i = 0; i < imgs.length; i++) {
                         let getImg = yield cookingrecipe_1.default.Img.findOne({
                             where: {

@@ -46,7 +46,7 @@ export class DishController{
                             dishId: id,
                             imgUrlImg: imgs[i]
                         }, { transaction })
-                    }                           
+                    }
                 }
             }
             transaction.commit();
