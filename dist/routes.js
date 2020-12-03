@@ -21,6 +21,7 @@ function routes(app) {
     fileImage_routes_1.FileImageRoute("/api/Image", app);
     permission_route_1.PermissionRoute("/api/Permission", app);
     notify_route_1.NotifyRoute("/api/Notify", app);
+    favorite_route_1.FavoriteRoute("/api/Favorite", app);
 }
 exports.routes = routes;
 function routesNoauthenticate(app) {

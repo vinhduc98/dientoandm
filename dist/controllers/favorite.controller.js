@@ -47,6 +47,40 @@ class FavoriteController {
             }
         });
     }
+    changeFavorite(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let transaction = yield cookingrecipe_1.default.sequelize.transaction();
+            let body = req.body;
+            let jwtPayLoad = req.jwtPayLoad;
+            try {
+                console.log(body.status);
+                if (body.status === 1) {
+                    yield cookingrecipe_1.default.Favorite.create({
+                        accountId: jwtPayLoad.id,
+                        dishId: body.dishId,
+                    }, { transaction });
+                    transaction.commit();
+                }
+                else {
+                    yield cookingrecipe_1.default.Favorite.destroy({ where: {
+                            dishId: body.dishId,
+                            accountId: jwtPayLoad.id
+                        }, transaction });
+                    transaction.commit();
+                }
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok"
+                });
+            }
+            catch (error) {
+                if (transaction) {
+                    transaction.rollback();
+                }
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
 }
 exports.FavoriteController = FavoriteController;
 //# sourceMappingURL=favorite.controller.js.map

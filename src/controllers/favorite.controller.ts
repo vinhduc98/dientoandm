@@ -32,4 +32,41 @@ export class FavoriteController{
             ErrorGeneral(error,200,req,res,next);
         }
     }
+
+    async changeFavorite(req:any,res:any, next:any){
+        let transaction = await db.sequelize.transaction();
+        let body = req.body;
+        let jwtPayLoad = req.jwtPayLoad;
+        try {
+
+            console.log(body.status);
+
+            if(body.status===1)
+            {
+                await db.Favorite.create({
+                    accountId:jwtPayLoad.id,
+                    dishId:body.dishId,
+                },{transaction})
+                transaction.commit();
+            }
+            else{
+                await db.Favorite.destroy({where:{
+                    dishId:body.dishId,
+                    accountId:jwtPayLoad.id
+                },transaction})
+                transaction.commit();
+            }
+
+            return res.status(200).send({
+                status:1,
+                description:"Ok"
+            })
+        } catch (error) {
+            if(transaction)
+            {
+                transaction.rollback();
+            }
+            ErrorGeneral(error,200,req,res,next);
+        }
+    }
 }

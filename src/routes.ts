@@ -7,7 +7,8 @@ import {CommentRouteNoauthenticate} from './routes/comment.route';
 import {PermissionRoute} from './routes/permission.route';
 import {NotifyRoute} from './routes/notify.route';
 import {checkJWT,checkJWTDb} from './middleswares/checkJWT.middlesware';
-import {FavoriteRouteNoauthenticate} from './routes/favorite.route'
+import {FavoriteRouteNoauthenticate,FavoriteRoute} from './routes/favorite.route';
+
 
 export function routes(app: Express) {
     app.route("/").get((req, res) => {
@@ -20,6 +21,7 @@ export function routes(app: Express) {
     FileImageRoute("/api/Image",app);
     PermissionRoute("/api/Permission",app);
     NotifyRoute("/api/Notify",app);
+    FavoriteRoute("/api/Favorite",app);
 }
 
 export function routesNoauthenticate(app:Express){
