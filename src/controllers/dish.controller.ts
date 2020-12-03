@@ -24,33 +24,29 @@ export class DishController{
 
             const imgs:any =body.imgs;
 
-            if(imgs.length>0)
+            if(imgs.length>0&&imgs.indexOf("")<=-1)
             {
                 for(let i=0;i<imgs.length;i++)
                 {
-                    if(imgs[i]!=="")
-                    {
-                        let getImg= await db.Img.findOne({
-                            where:{
-                                url_img:imgs[i]
-                            },transaction
+                    let getImg = await db.Img.findOne({
+                        where: {
+                            url_img: imgs[i]
+                        }, transaction
+                    })
+
+                    if (getImg === null) {
+                        return res.status(200).send({
+                            status: 0,
+                            description: 'Hình ảnh chưa được cập nhật lên server - yêu cầu kiểm tra lại'
                         })
-    
-                        if(getImg===null)
-                        {
-                            return res.status(200).send({
-                                status:0,
-                                description:'Hình ảnh chưa được cập nhật lên server - yêu cầu kiểm tra lại'
-                            })
-                        }
-                        else{
-                            const id = createDish.getDataValue('id');
-                            let createDishimg = await db.DishImg.create({
-                                dishId:id,
-                                imgUrlImg:imgs[i]
-                            },{transaction})
-                        }
-                    }           
+                    }
+                    else {
+                        const id = createDish.getDataValue('id');
+                        let createDishimg = await db.DishImg.create({
+                            dishId: id,
+                            imgUrlImg: imgs[i]
+                        }, { transaction })
+                    }                           
                 }
             }
             transaction.commit();
