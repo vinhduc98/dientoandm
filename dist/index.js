@@ -41,9 +41,9 @@ cookingrecipe_1.default.sequelize
     .catch((err) => {
     console.log(err);
 });
+let httpServer = new http_1.default.Server(app);
 routes_1.routesNoauthenticate(app);
 routes_1.routes(app);
-let httpServer = new http_1.default.Server(app);
 httpServer.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });

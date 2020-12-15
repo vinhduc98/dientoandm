@@ -7,6 +7,14 @@ let tableNameoferror =function  checkBelongtoDatabase(err:any, req:any, res:any)
         {
             message = "Tài khoản";
         }
+        else if(err.errors[0].message.indexOf("favorites")!==-1)
+        {
+            message = "Yêu thích"
+        }
+        else
+        {
+            message = "Đối tượng"
+        }
     }
     if(err.name==="SequelizeForeignKeyConstraintError")
     {

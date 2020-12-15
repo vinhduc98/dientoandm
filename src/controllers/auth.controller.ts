@@ -92,6 +92,5 @@ export class AuthController{
         } catch (error) {
             ErrorGeneral(error,200, req, res, next);
         }
-
     }
 }

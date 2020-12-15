@@ -7,6 +7,7 @@ const dish_swagger_1 = require("./swagger/dish.swagger");
 const account_swagger_1 = require("./swagger/account.swagger");
 const comment_swagger_1 = require("./swagger/comment.swagger");
 const notify_swagger_1 = require("./swagger/notify.swagger");
+const favorite_swagger_1 = require("./swagger/favorite.swagger");
 exports.swaggerDocument = {
     openapi: "3.0.0",
     info: {
@@ -46,6 +47,10 @@ exports.swaggerDocument = {
         {
             name: "File",
             description: "Everything about File"
+        },
+        {
+            name: "Favorite",
+            description: "Everything ablout Favorite"
         }
     ],
     paths: {
@@ -88,6 +93,9 @@ exports.swaggerDocument = {
         "/api/Comment/getCommentByDishId/{dishId}": {
             get: comment_swagger_1.getCommentByDishId
         },
+        "/api/Comment/getCommentByCommentId/{commentId}": {
+            get: comment_swagger_1.getCommentByCommentId
+        },
         "/api/Notify/getNotifyByAccountId": {
             get: notify_swagger_1.notify
         },
@@ -96,6 +104,12 @@ exports.swaggerDocument = {
         },
         "/api/Image/UploadImageNew": {
             post: file_swagger_1.uploadImageNew
+        },
+        "/api/favorite/getFavoriteByDishId/{dishId}": {
+            get: favorite_swagger_1.getFavoriteByDishId
+        },
+        "/api/favorite/changeFavorite": {
+            put: favorite_swagger_1.changeFavorite
         }
     }
 };

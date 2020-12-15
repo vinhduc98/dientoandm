@@ -19,6 +19,14 @@ exports.default = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        dateOfBirth: {
+            type: Sequelize.DATE,
+            defaultValue: new Date()
+        },
+        sex: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+        },
         avatar: {
             type: Sequelize.STRING,
             allowNull: false

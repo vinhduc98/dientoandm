@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCommentByDishId = exports.createComment = void 0;
+exports.getCommentByCommentId = exports.getCommentByDishId = exports.createComment = void 0;
 exports.createComment = {
     tags: ["Comment"],
     requestBody: {
@@ -80,6 +80,46 @@ exports.getCommentByDishId = {
     responses: {
         "200": {
             description: "List comment của từng dish",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                    },
+                    example: {
+                        status: 1,
+                        description: "Ok",
+                        comments: [
+                            {
+                                id: "id",
+                                rating: "Đánh giá sao",
+                                comment: "viết bình luận",
+                                isMember: "là thành viên hay ẩn danh",
+                                isChildren: "Con của bình luận nào",
+                                dishId: "Loại dish"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+};
+exports.getCommentByCommentId = {
+    tags: ["Comment"],
+    description: "Lấy thông tin comment con",
+    parameters: [
+        {
+            in: "path",
+            name: "dishId",
+            require: true,
+            schema: {
+                type: "int"
+            }
+        }
+    ],
+    responses: {
+        "200": {
+            description: "Lấy các comment",
             content: {
                 "application/json": {
                     schema: {

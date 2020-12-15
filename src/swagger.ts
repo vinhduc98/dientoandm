@@ -2,8 +2,9 @@ import {login,logout} from "./swagger/auth.swagger";
 import {uploadImage,uploadImageNew} from "./swagger/file.swagger";
 import {getAlldish,createDish,updateDish,deleteDish} from "./swagger/dish.swagger";
 import {createAccount,getAccountInfo,changeAvatar,updateAccount,changePassword} from "./swagger/account.swagger";
-import {createComment,getCommentByDishId} from "./swagger/comment.swagger";
+import {createComment,getCommentByDishId,getCommentByCommentId} from "./swagger/comment.swagger";
 import {notify} from './swagger/notify.swagger';
+import {getFavoriteByDishId,changeFavorite} from './swagger/favorite.swagger';
 export const swaggerDocument ={
     openapi: "3.0.0",
     info: {
@@ -43,6 +44,10 @@ export const swaggerDocument ={
       {
         name:"File",
         description:"Everything about File"
+      },
+      {
+        name:"Favorite",
+        description:"Everything ablout Favorite"
       }
     ],
     paths:{
@@ -85,6 +90,9 @@ export const swaggerDocument ={
       "/api/Comment/getCommentByDishId/{dishId}":{
         get:getCommentByDishId
       },
+      "/api/Comment/getCommentByCommentId/{commentId}":{
+        get:getCommentByCommentId
+      },
       "/api/Notify/getNotifyByAccountId":{
         get:notify
       },
@@ -93,6 +101,12 @@ export const swaggerDocument ={
       },
       "/api/Image/UploadImageNew":{
         post: uploadImageNew
+      },
+      "/api/favorite/getFavoriteByDishId/{dishId}":{
+        get:getFavoriteByDishId
+      },
+      "/api/favorite/changeFavorite":{
+        put:changeFavorite
       }
     }
 

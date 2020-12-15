@@ -46,12 +46,10 @@ db.sequelize
         console.log(err)
     })
 
+let httpServer = new http.Server(app)
+
 routesNoauthenticate(app);
 routes(app);
-
-
-
-let httpServer = new http.Server(app)
 httpServer.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });

@@ -36,7 +36,9 @@ class AccountController {
                     username: body.username,
                     pwd: bcryptjs_1.default.hashSync(body.pwd, 10),
                     name: body.name,
+                    sex: body.sex,
                     type: body.type,
+                    dateOfBirth: body.dateOfBirth,
                     avatar: defaultimg_config_1.img.iconlogin
                 }, { transaction });
                 transaction.commit();

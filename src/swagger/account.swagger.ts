@@ -20,6 +20,10 @@ export const createAccount:any={
                             type:"string",
                             description:"Tên người dùng"
                         },
+                        sex:{
+                            type:"number",
+                            description:"1 là gái, 0 là trai"
+                        },
                         type:{
                             type:"number",
                             description:"Loại 0 (admin) - loại 1 (user thường agent), mặc định tự tạo loại 1"

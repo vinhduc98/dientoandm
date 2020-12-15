@@ -2,9 +2,11 @@ import {Model, BuildOptions} from 'sequelize';
 export interface IAccount extends Model{
     id?:number,
     name:string,
+    sex:number,
     username:string,
     pwd:string,
     type:number,
+    dateOfBirth:Date,
     avatar:string,
 }
 
@@ -28,6 +30,14 @@ export default (sequelize:any, Sequelize:any)=>{
         name:{
             type:Sequelize.STRING,
             allowNull: false
+        },
+        dateOfBirth:{
+            type:Sequelize.DATE,
+            defaultValue: new Date()
+        },
+        sex:{
+            type:Sequelize.INTEGER,
+            defaultValue:0
         },
         avatar:{
             type:Sequelize.STRING,

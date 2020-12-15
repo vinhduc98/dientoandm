@@ -16,6 +16,12 @@ let tableNameoferror = function checkBelongtoDatabase(err, req, res) {
         if (err.errors[0].message.indexOf("accounts") !== -1) {
             message = "Tài khoản";
         }
+        else if (err.errors[0].message.indexOf("favorites") !== -1) {
+            message = "Yêu thích";
+        }
+        else {
+            message = "Đối tượng";
+        }
     }
     if (err.name === "SequelizeForeignKeyConstraintError") {
         if (err.parent.sqlMessage.indexOf("accountId") !== -1) {

@@ -23,7 +23,9 @@ export class AccountController{
                 username: body.username,
                 pwd: bcrypt.hashSync(body.pwd,10),
                 name:body.name,
+                sex:body.sex,
                 type:body.type,
+                dateOfBirth:body.dateOfBirth,
                 avatar:img.iconlogin
             },{transaction})
             transaction.commit();
