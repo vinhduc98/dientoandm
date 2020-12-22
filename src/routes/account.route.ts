@@ -12,4 +12,5 @@ export function AccountRoute(url:string, app:Express){
 export function AccountRouteNoauthenticate(url:string, app:Express){
     const acc = new AccountController();
     app.route(`${url}/CreateAccount`).post(acc.createAccount);
+    app.route(`${url}/getAllAccount`).get(acc.getAllAccount);
 }

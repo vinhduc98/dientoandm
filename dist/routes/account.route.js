@@ -13,6 +13,7 @@ exports.AccountRoute = AccountRoute;
 function AccountRouteNoauthenticate(url, app) {
     const acc = new account_controller_1.AccountController();
     app.route(`${url}/CreateAccount`).post(acc.createAccount);
+    app.route(`${url}/getAllAccount`).get(acc.getAllAccount);
 }
 exports.AccountRouteNoauthenticate = AccountRouteNoauthenticate;
 //# sourceMappingURL=account.route.js.map

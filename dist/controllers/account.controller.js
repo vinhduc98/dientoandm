@@ -243,6 +243,23 @@ class AccountController {
             }
         });
     }
+    getAllAccount(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const accounts = yield cookingrecipe_1.default.Account.findAll({
+                    attributes: ['id', 'username', 'name', 'dateOfBirth', 'sex', 'avatar', 'type']
+                });
+                return res.status(200).send({
+                    status: 1,
+                    description: "Ok",
+                    accounts
+                });
+            }
+            catch (error) {
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
 }
 exports.AccountController = AccountController;
 //# sourceMappingURL=account.controller.js.map

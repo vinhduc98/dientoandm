@@ -170,7 +170,8 @@ class CommentController {
                 return res.status(200).send({
                     status: 1,
                     description: "Ok",
-                    comments: cmt
+                    comments: cmt,
+                    count: comments.length + 1
                 });
             }
             catch (error) {

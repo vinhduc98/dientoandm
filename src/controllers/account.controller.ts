@@ -248,4 +248,20 @@ export class AccountController{
 
     }
 
+    async getAllAccount(req:any, res:any, next:any){
+        try {
+            const accounts = await db.Account.findAll({
+                attributes:['id','username','name','dateOfBirth','sex','avatar','type']
+            });
+
+            return res.status(200).send({
+                status:1,
+                description:"Ok",
+                accounts
+            })
+        } catch (error) {
+            ErrorGeneral(error,200,req,res,next);
+        }
+    }
+
 }
