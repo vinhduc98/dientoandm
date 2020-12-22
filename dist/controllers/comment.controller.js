@@ -16,6 +16,7 @@ exports.CommentController = void 0;
 const cookingrecipe_1 = __importDefault(require("../database/cookingrecipe"));
 const description_1 = require("../description/description");
 const sequelize_1 = __importDefault(require("sequelize"));
+const defaultimg_config_1 = require("../config/defaultimg.config");
 class CommentController {
     createComment(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -87,6 +88,18 @@ class CommentController {
                     order: [['updatedAt', 'DESC']]
                 });
                 for (let i = 0; i < parentComments.length; i++) {
+                    let avatar;
+                    const acc = yield cookingrecipe_1.default.Account.findOne({
+                        where: {
+                            username: parentComments[i].author
+                        }
+                    });
+                    if (acc !== null) {
+                        avatar = acc.avatar;
+                    }
+                    else {
+                        avatar = defaultimg_config_1.img.iconlogin;
+                    }
                     let objectParentComments = {
                         id: parentComments[i].id,
                         rating: parentComments[i].rating,
@@ -95,7 +108,8 @@ class CommentController {
                         isMember: parentComments[i].isMember,
                         isChildren: parentComments[i].getDataValue("isChildren"),
                         createdAt: parentComments[i].getDataValue("createdAt"),
-                        dishId: parentComments[i].getDataValue("dishId")
+                        dishId: parentComments[i].getDataValue("dishId"),
+                        avatar
                     };
                     comments.push(objectParentComments);
                 }
@@ -110,6 +124,18 @@ class CommentController {
                     order: [['isChildren', 'ASC']]
                 });
                 for (let j = 0; j < childrenComments.length; j++) {
+                    let avatar;
+                    const acc = yield cookingrecipe_1.default.Account.findOne({
+                        where: {
+                            username: childrenComments[j].author
+                        }
+                    });
+                    if (acc !== null) {
+                        avatar = acc.avatar;
+                    }
+                    else {
+                        avatar = defaultimg_config_1.img.iconlogin;
+                    }
                     let objectChildrenComments = {
                         id: childrenComments[j].id,
                         rating: childrenComments[j].rating,
@@ -118,7 +144,8 @@ class CommentController {
                         isMember: childrenComments[j].isMember,
                         isChildren: childrenComments[j].getDataValue("isChildren"),
                         createdAt: childrenComments[j].getDataValue("createdAt"),
-                        dishId: childrenComments[j].getDataValue("dishId")
+                        dishId: childrenComments[j].getDataValue("dishId"),
+                        avatar
                     };
                     childComment.push(objectChildrenComments);
                 }
@@ -155,16 +182,44 @@ class CommentController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let id = req.params.commentId;
+                let cmts = {};
+                let commentChildren = [];
                 let comment = yield cookingrecipe_1.default.Comment.findAll({
                     attributes: ['id', 'rating', 'comment', 'author', 'isMember', 'isChildren', 'createdAt'],
                     where: {
                         isChildren: id
                     }
                 });
+                for (let i = 0; i < comment.length; i++) {
+                    let avatar;
+                    const acc = yield cookingrecipe_1.default.Account.findOne({
+                        where: {
+                            username: comment[i].author
+                        }
+                    });
+                    if (acc !== null) {
+                        avatar = acc.avatar;
+                    }
+                    else {
+                        avatar = defaultimg_config_1.img.iconlogin;
+                    }
+                    console.log(avatar);
+                    cmts = {
+                        id: comment[i].id,
+                        rating: comment[i].rating,
+                        comment: comment[i].comment,
+                        author: comment[i].author,
+                        isMember: comment[i].isMember,
+                        isChildren: comment[i].getDataValue("isChildren"),
+                        createdAt: comment[i].getDataValue("createdAt"),
+                        avatar
+                    };
+                    commentChildren.push(cmts);
+                }
                 return res.status(200).send({
                     status: 1,
                     description: "Ok",
-                    commentChildren: comment
+                    commentChildren
                 });
             }
             catch (error) {

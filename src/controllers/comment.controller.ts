@@ -2,6 +2,7 @@ import db from '../database/cookingrecipe'
 import {ErrorGeneral} from '../description/description';
 import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
 import Sequelize from "sequelize";
+import {img} from "../config/defaultimg.config";
 
 export class CommentController{
     async createComment(req:any, res:any, next:any){
@@ -79,6 +80,21 @@ export class CommentController{
 
             for(let i=0;i<parentComments.length;i++)
             {
+                let avatar:any;
+                const acc =await db.Account.findOne({
+                    where:{
+                        username:parentComments[i].author
+                    }
+                })
+
+                if(acc!==null)
+                {
+                    avatar = acc.avatar
+                }
+                else
+                {
+                    avatar = img.iconlogin
+                }
                 let objectParentComments:any = {
                     id:parentComments[i].id,
                     rating:parentComments[i].rating,
@@ -87,7 +103,8 @@ export class CommentController{
                     isMember:parentComments[i].isMember,
                     isChildren:parentComments[i].getDataValue("isChildren"),
                     createdAt:parentComments[i].getDataValue("createdAt"),
-                    dishId:parentComments[i].getDataValue("dishId")
+                    dishId:parentComments[i].getDataValue("dishId"),
+                    avatar
                 }
                 comments.push(objectParentComments);
             }
@@ -103,6 +120,21 @@ export class CommentController{
             })
             for(let j =0;j<childrenComments.length;j++)
             {
+                let avatar:any;
+                const acc =await db.Account.findOne({
+                    where:{
+                        username:childrenComments[j].author
+                    }
+                })
+
+                if(acc!==null)
+                {
+                    avatar = acc.avatar
+                }
+                else
+                {
+                    avatar = img.iconlogin
+                }
                 let objectChildrenComments:any = {
                     id:childrenComments[j].id,
                     rating:childrenComments[j].rating,
@@ -111,7 +143,8 @@ export class CommentController{
                     isMember:childrenComments[j].isMember,
                     isChildren:childrenComments[j].getDataValue("isChildren"),
                     createdAt:childrenComments[j].getDataValue("createdAt"),
-                    dishId:childrenComments[j].getDataValue("dishId")
+                    dishId:childrenComments[j].getDataValue("dishId"),
+                    avatar
                 }
                 childComment.push(objectChildrenComments);
             }
@@ -141,7 +174,6 @@ export class CommentController{
                 }
 
             }
-
             return res.status(200).send({
                 status:1,
                 description:"Ok",
@@ -155,16 +187,50 @@ export class CommentController{
     async getCommentByCommentId(req:any, res: any, next:any ){
         try {
             let id = req.params.commentId;
+            let cmts:any = {};
+            let commentChildren:any=[];
             let comment =await db.Comment.findAll({
                 attributes:['id','rating','comment','author','isMember', 'isChildren','createdAt'],
                 where:{
                     isChildren:id
                 }
             })
+
+            for(let i=0;i<comment.length;i++)
+            {
+                let avatar:any;
+                const acc =await db.Account.findOne({
+                    where:{
+                        username:comment[i].author
+                    }
+                })
+
+                if(acc!==null)
+                {
+                    avatar = acc.avatar
+                }
+                else
+                {
+                    avatar = img.iconlogin
+                }
+                console.log(avatar);
+                cmts = {
+                    id:comment[i].id,
+                    rating:comment[i].rating,
+                    comment:comment[i].comment,
+                    author:comment[i].author,
+                    isMember:comment[i].isMember,
+                    isChildren:comment[i].getDataValue("isChildren"),
+                    createdAt:comment[i].getDataValue("createdAt"),
+                    avatar
+                }
+                commentChildren.push(cmts);
+            }
+
             return res.status(200).send({
                 status:1,
                 description:"Ok",
-                commentChildren:comment
+                commentChildren
             })
         } catch (error) {
             ErrorGeneral(error,200,req,res,next);
