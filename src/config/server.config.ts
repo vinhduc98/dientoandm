@@ -11,6 +11,6 @@ export const configToken ={
 
 export const infoServer ={
     IP:'172.105.117.203',
-    HOST_NAME:'http://cookingrecipe.ml:8000',
+    HOST_NAME:'http://cookingrecipeclcp.tk:8000',
     LOCAL_NAME:'http://localhost:8000'
 }
