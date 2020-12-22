@@ -37,8 +37,20 @@ exports.dbcookingrecipe = void 0;
 //         idle: 10000,
 //     },
 // }
+// export const dbcookingrecipe = {
+//     HOST: "139.162.113.35",
+//     USER: "dientoandm",
+//     PASSWORD: "dientoandm",
+//     DB:"dbcookingrecipe", // cookingrecipe
+//     pool: {
+//         max: 5,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000,
+//     },
+// }
 exports.dbcookingrecipe = {
-    HOST: "139.162.113.35",
+    HOST: "172.104.167.112",
     USER: "dientoandm",
     PASSWORD: "dientoandm",
     DB: "dbcookingrecipe",

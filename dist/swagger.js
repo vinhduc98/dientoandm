@@ -12,7 +12,7 @@ exports.swaggerDocument = {
     openapi: "3.0.0",
     info: {
         version: "1.0.0",
-        title: "AppChat API CloudComputing",
+        title: "CookingRecipe API CloudComputing",
         description: "",
         termsOfService: "",
         contact: {
