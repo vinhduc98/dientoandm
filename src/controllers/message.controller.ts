@@ -3,18 +3,22 @@ import {ErrorGeneral} from '../description/description';
 export class MessageController {
     async addMessage (req:any, res:any, next:any){
         const body = req.body;
+        const sender = body.sender;
+        const recipient = body.recipient;
+        const message = body.message;
+        const read = body.read;
         try {
-            const message = await db.Message.create({
-                accountId:body.sender,
-                message:body.message,
-                read:body.read===undefined?0:body.read
+            const mess = await db.Message.create({
+                accountId:sender,
+                message,
+                read:read===undefined?0:body.read
             })
 
-            if(message.getDataValue("id")!==undefined)
+            if(mess.getDataValue("id")!==undefined)
             {
                 await db.Recipient.create({
-                    accountId:body.recipient,
-                    messageId:message.getDataValue("id")
+                    accountId:recipient,
+                    messageId:mess.getDataValue("id")
                 })
             }
 
@@ -32,6 +36,7 @@ export class MessageController {
         const recipient = req.query.recipientId;
         let listMessage:any = [];
         try {
+            // Lấy tin nhắn gửi
             const messageSend = await db.Message.findAll({
                 where:{
                     accountId:sender
@@ -47,13 +52,32 @@ export class MessageController {
                 }
 
                 listMessage.push(messSend);
-            }
 
+            }
+            // Trường hợp nhắn tin cho chính bản thân
+            if(sender === recipient)
+            {
+                return res.status(200).send({
+                    messages:listMessage,
+                    status:1,
+                    description:"Ok"
+                })
+            }
+            // Lấy tin nhắn nhận
             const messageReceive = await db.Recipient.findAll({
                 where:{
                     accountId:recipient
                 }
             })
+            // Trường hợp nhắn tin
+            if(messageReceive.length===0)
+            {
+                return res.status(200).send({
+                    messages:[],
+                    status:0,
+                    description:"Tin nhắn không được gửi"
+                })
+            }
             for(let j=0;j<messageReceive.length;j++)
             {
                 let receive = await db.Message.findOne({
@@ -72,13 +96,13 @@ export class MessageController {
                 listMessage.push(messReceive)
             }
 
-            // sắp xếp theo time
+            // sắp xếp theo thời gian
             listMessage.sort((a:any,b:any)=>{
                 return a.createdAt.getTime() - b.createdAt.getTime();
             })
 
             return res.status(200).send({
-                listMessage,
+                messages:listMessage,
                 status:1,
                 description:"Ok"
             })
