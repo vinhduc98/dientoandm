@@ -78,7 +78,9 @@ export class MessageController {
             })
 
             return res.status(200).send({
-                listMessage
+                listMessage,
+                status:1,
+                description:"Ok"
             })
         } catch (error) {
             ErrorGeneral(error,200,req,res,next);

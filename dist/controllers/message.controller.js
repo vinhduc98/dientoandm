@@ -85,7 +85,9 @@ class MessageController {
                     return a.createdAt.getTime() - b.createdAt.getTime();
                 });
                 return res.status(200).send({
-                    listMessage
+                    listMessage,
+                    status: 1,
+                    description: "Ok"
                 });
             }
             catch (error) {
