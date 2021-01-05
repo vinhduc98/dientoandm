@@ -3,7 +3,6 @@ import {RegexHandle} from '../functionManage/checkregex';
 import bcrypt from 'bcryptjs'
 import {ErrorGeneral} from '../description/description';
 import {img} from '../config/defaultimg.config';
-import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
 import fs from 'fs';
 
 export class AccountController{

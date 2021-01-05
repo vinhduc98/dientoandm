@@ -10,6 +10,8 @@ const permission_route_1 = require("./routes/permission.route");
 const notify_route_1 = require("./routes/notify.route");
 const checkJWT_middlesware_1 = require("./middleswares/checkJWT.middlesware");
 const favorite_route_1 = require("./routes/favorite.route");
+const room_route_1 = require("./routes/room.route");
+const message_route_1 = require("./routes/message.route");
 function routes(app) {
     app.route("/").get((req, res) => {
         res.render("index");
@@ -34,6 +36,8 @@ function routesNoauthenticate(app) {
     comment_route_1.CommentRouteNoauthenticate("/api/Comment", app);
     fileImage_routes_1.FileInageRouteNoauthenticate("/api/Image", app);
     favorite_route_1.FavoriteRouteNoauthenticate("/api/Favorite", app);
+    room_route_1.RoomRouteNoauthenticate("/api/Room", app);
+    message_route_1.MessageRouteNoauthenticate("/api/Message", app);
 }
 exports.routesNoauthenticate = routesNoauthenticate;
 //# sourceMappingURL=routes.js.map
