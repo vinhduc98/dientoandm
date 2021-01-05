@@ -50,6 +50,7 @@ class MessageController {
             const sender = req.query.senderId;
             const recipient = req.query.recipientId;
             let listMessage = [];
+            let listSubId = [];
             try {
                 // Lấy tin nhắn gửi
                 const messageSend = yield cookingrecipe_1.default.Message.findAll({
@@ -59,48 +60,42 @@ class MessageController {
                 });
                 for (let i = 0; i < messageSend.length; i++) {
                     let messSend = {
+                        messageId: messageSend[i].id,
                         sender: messageSend[i].getDataValue("accountId"),
                         message: messageSend[i].message,
                         status: messageSend[i].read,
                         createdAt: messageSend[i].getDataValue("createdAt")
                     };
-                    listMessage.push(messSend);
-                }
-                // Trường hợp nhắn tin cho chính bản thân
-                if (sender === recipient) {
-                    return res.status(200).send({
-                        messages: listMessage,
-                        status: 1,
-                        description: "Ok"
+                    const idRecieve = yield cookingrecipe_1.default.Recipient.findOne({
+                        where: {
+                            messageId: messageSend[i].id
+                        }
                     });
+                    if (recipient.toString() === idRecieve.accountId.toString()) {
+                        listMessage.push(messSend);
+                    }
                 }
-                // Lấy tin nhắn nhận
-                const messageReceive = yield cookingrecipe_1.default.Recipient.findAll({
+                const messageRecieve = yield cookingrecipe_1.default.Message.findAll({
                     where: {
                         accountId: recipient
                     }
                 });
-                // Trường hợp nhắn tin
-                if (messageReceive.length === 0) {
-                    return res.status(200).send({
-                        messages: [],
-                        status: 0,
-                        description: "Tin nhắn không được gửi"
-                    });
-                }
-                for (let j = 0; j < messageReceive.length; j++) {
-                    let receive = yield cookingrecipe_1.default.Message.findOne({
+                for (let j = 0; j < messageRecieve.length; j++) {
+                    let messRecieve = {
+                        messageId: messageRecieve[j].id,
+                        recipient: messageRecieve[j].getDataValue("accountId"),
+                        status: messageRecieve[j].read,
+                        message: messageRecieve[j].message,
+                        createdAt: messageRecieve[j].getDataValue("createdAt")
+                    };
+                    const idRecieve = yield cookingrecipe_1.default.Recipient.findOne({
                         where: {
-                            id: messageReceive[j].getDataValue("messageId")
+                            messageId: messageRecieve[j].id
                         }
                     });
-                    let messReceive = {
-                        recipient: receive.getDataValue("accountId"),
-                        message: receive.message,
-                        status: receive.read,
-                        createdAt: receive.getDataValue("createdAt")
-                    };
-                    listMessage.push(messReceive);
+                    if (idRecieve.accountId.toString() === sender.toString()) {
+                        listMessage.push(messRecieve);
+                    }
                 }
                 // sắp xếp theo thời gian
                 listMessage.sort((a, b) => {
