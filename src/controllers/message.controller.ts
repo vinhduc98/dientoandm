@@ -35,7 +35,6 @@ export class MessageController {
         const sender = req.query.senderId;
         const recipient = req.query.recipientId;
         let listMessage:any = [];
-        let listSubId:any = [];
         try {
             // Lấy tin nhắn gửi
             const messageSend = await db.Message.findAll({
@@ -65,6 +64,14 @@ export class MessageController {
                 }
             }
 
+            if(sender.toString()===recipient.toString())
+            {
+                return res.status(200).send({
+                    messages:listMessage,
+                    status:1,
+                    description:"Ok"
+                })
+            }
             const messageRecieve = await db.Message.findAll({
                 where:{
                     accountId:recipient

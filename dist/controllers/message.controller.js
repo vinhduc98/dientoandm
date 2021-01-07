@@ -50,7 +50,6 @@ class MessageController {
             const sender = req.query.senderId;
             const recipient = req.query.recipientId;
             let listMessage = [];
-            let listSubId = [];
             try {
                 // Lấy tin nhắn gửi
                 const messageSend = yield cookingrecipe_1.default.Message.findAll({
@@ -74,6 +73,13 @@ class MessageController {
                     if (recipient.toString() === idRecieve.accountId.toString()) {
                         listMessage.push(messSend);
                     }
+                }
+                if (sender.toString() === recipient.toString()) {
+                    return res.status(200).send({
+                        messages: listMessage,
+                        status: 1,
+                        description: "Ok"
+                    });
                 }
                 const messageRecieve = yield cookingrecipe_1.default.Message.findAll({
                     where: {
