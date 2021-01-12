@@ -7,7 +7,8 @@ export interface IAccount extends Model{
     pwd:string,
     type:number,
     dateOfBirth:Date,
-    avatar:string,
+    avatar:string
+    state:string
 }
 
 type IAccountStatic = typeof Model & (new (values?:object, options?:BuildOptions)=>IAccount)
@@ -46,6 +47,10 @@ export default (sequelize:any, Sequelize:any)=>{
         type:{
             type:Sequelize.INTEGER,
             defaultValue:1
+        },
+        state:{
+            type:Sequelize.STRING,
+            defaultValue:'offline'
         }
     },{indexes:[{unique:true, fields:['username']}]}) as IAccountStatic;
 

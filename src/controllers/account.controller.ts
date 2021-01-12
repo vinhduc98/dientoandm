@@ -250,7 +250,7 @@ export class AccountController{
     async getAllAccount(req:any, res:any, next:any){
         try {
             const accounts = await db.Account.findAll({
-                attributes:['id','username','name','dateOfBirth','sex','avatar','type']
+                attributes:['id','username','name','dateOfBirth','sex','avatar','type','state']
             });
 
             return res.status(200).send({

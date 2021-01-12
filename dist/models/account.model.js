@@ -34,6 +34,10 @@ exports.default = (sequelize, Sequelize) => {
         type: {
             type: Sequelize.INTEGER,
             defaultValue: 1
+        },
+        state: {
+            type: Sequelize.STRING,
+            defaultValue: 'offline'
         }
     }, { indexes: [{ unique: true, fields: ['username'] }] });
     return account;

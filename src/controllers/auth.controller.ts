@@ -4,8 +4,6 @@ import bcrypt from 'bcryptjs'
 import {ErrorGeneral} from '../description/description';
 import jwt from 'jsonwebtoken';
 import { configToken } from '../config/server.config';
-import {FunctionHandle} from '../functionManage/destroyfilecloudinary';
-
 
 export class AuthController{
     async Login(req:any, res:any, next: any){
