@@ -262,5 +262,4 @@ export class AccountController{
             ErrorGeneral(error,200,req,res,next);
         }
     }
-
 }

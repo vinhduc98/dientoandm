@@ -247,7 +247,7 @@ class AccountController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const accounts = yield cookingrecipe_1.default.Account.findAll({
-                    attributes: ['id', 'username', 'name', 'dateOfBirth', 'sex', 'avatar', 'type']
+                    attributes: ['id', 'username', 'name', 'dateOfBirth', 'sex', 'avatar', 'type', 'state']
                 });
                 return res.status(200).send({
                     status: 1,
