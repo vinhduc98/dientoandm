@@ -7,11 +7,7 @@ import {swaggerDocument} from './swagger';
 import { routes,routesNoauthenticate } from './routes';
 import db from './database/cookingrecipe';
 import morgan from "morgan";
-import cache from 'memory-cache';
 import bodyParser from "body-parser";
-import fs from "fs";
-import axios from "axios";
-import https from 'https'
 
 let PORT = process.env.PORT || 8000;
 
@@ -32,21 +28,95 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.options("*", cors());
 
-// const httpsAgent = new https.Agent({ rejectUnauthorized: false });
-// axios.get("https://image.ap-south-1.linodeobjects.com/abc.jpg",{httpsAgent}).then(rs=>{
-//     console.log(rs);
-// })
-
 db.sequelize
-    .sync ({force:false, alter: true})
-    .then(()=>{
+    .sync({ force: false, alter: true })
+    .then(() => {
         console.log("Connecting database cookingrecipe");
     })
-    .catch((err)=>{
+    .catch((err) => {
         console.log(err)
     })
 
 let httpServer = new http.Server(app)
+
+let io = require("socket.io")(httpServer,{
+    cors:{
+        origin:"http://localhost:3006",
+        methods:["GET","POST"],
+        credentials:true
+    }
+});
+
+let ArrayUser: any =[];
+io.on("connection",(socket:any)=>{
+    console.log("connect:"+socket.id);
+    socket.on('disconnect',()=>{
+        console.log("disconnect:"+socket.id);
+    })
+
+    socket.on('online', (data:any) =>{
+        if(data.username!==undefined)
+        {
+            ArrayUser.push(data);
+            db.Account.update({
+                state:'online'
+            },{
+                where:{
+                    username:data.username
+                }
+            })
+        }
+    })
+
+    socket.on('offline', (data:any)=>{
+        if(data.username!==undefined)
+        {
+            // ArrayUser.splice(ArrayUser.indexOf(data),1);
+            // console.log(ArrayUser);
+            for(let i = 0;i< ArrayUser.length;i++)
+            {
+                if(data.username===ArrayUser[i].username)
+                {
+                    ArrayUser.splice(ArrayUser.indexOf(ArrayUser[i]),1)
+                }
+            }
+
+            db.Account.update({
+                state:'offline'
+            },{
+                where:{
+                    username:data.username
+                }
+            })
+        }
+    })
+
+    socket.on('send_messagelast_server',(data:any)=>{
+        if(data)
+        {
+            io.to(data.socketId).emit('send_messagelast_client',data.messagelast);
+        }
+    })
+    socket.on('send_messagelast_server',(data:any)=>{
+        if(data)
+        {
+            db.Account.findOne({
+                where:{
+                    id:data.recipient
+                }
+            }).then(rs=>{
+                for(let i=0;i<ArrayUser.length;i++)
+                {
+                    if(ArrayUser[i].username === rs.username)
+                    {
+                        io.to(ArrayUser[i].socketId).emit('send_messagelast_client', data.messagelast);
+                        // io.to(ArrayUser[i].socketId).emit('notify_send_message',{username:rs.username, count:1})
+                    }
+                }
+            })
+        }
+    })
+})
 
 routesNoauthenticate(app);
 routes(app);

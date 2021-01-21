@@ -118,6 +118,29 @@ class MessageController {
             }
         });
     }
+    getMessageLast(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const account = req.query.account;
+            const friend = req.query.account;
+            try {
+                let accounts = yield cookingrecipe_1.default.Account.findAll();
+                for (let i = 0; i < accounts.length; i++) {
+                    const messages = yield cookingrecipe_1.default.Message.findOne({
+                        where: {
+                            accountId: accounts[i].id
+                        }
+                    });
+                    // if(messages!==null)
+                    // {
+                    // }
+                }
+                return res.send('Ok');
+            }
+            catch (error) {
+                description_1.ErrorGeneral(error, 200, req, res, next);
+            }
+        });
+    }
 }
 exports.MessageController = MessageController;
 //# sourceMappingURL=message.controller.js.map

@@ -23,6 +23,7 @@ export class AuthController{
                     description:"Sai tài khoản"
                 })
             }
+
             const passwordIsValid = bcrypt.compareSync(body.pwd,account.pwd);
             if(!passwordIsValid||await regex.kiemTraChuoiCoDau(body.pwd)===true){
                 return res.status(200).send({

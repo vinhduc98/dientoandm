@@ -9,7 +9,7 @@ export class AccountController{
     async createAccount(req:any, res:any, next:any){
         let transaction = await db.sequelize.transaction();
         const regex = new RegexHandle();
-        const body =req.body;
+        const body = req.body;
         try {
             if(await regex.kiemTraChuoiCoDau(body.username)===true||await regex.kiemTraChuoiCoDau(body.pwd)===true)
             {
@@ -99,6 +99,7 @@ export class AccountController{
                     avatar:oldAvatar
                 }
             })
+
             if(avatar===null)
             {
                 return res.status(200).send({
@@ -112,6 +113,7 @@ export class AccountController{
                     url_img:newAvatar
                 }
             })
+
             if(getImg===null)
             {
                 return res.status(200).send({

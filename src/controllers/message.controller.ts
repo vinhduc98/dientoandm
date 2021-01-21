@@ -1,6 +1,8 @@
 import db from '../database/cookingrecipe';
 import {ErrorGeneral} from '../description/description';
+import { NotifyController } from './notify.controller';
 export class MessageController {
+
     async addMessage (req:any, res:any, next:any){
         const body = req.body;
         const sender = body.sender;
@@ -112,6 +114,31 @@ export class MessageController {
             })
         } catch (error) {
             ErrorGeneral(error,200,req,res,next);
+        }
+    }
+
+    async getMessageLast(req:any, res:any, next:any){
+        const account = req.query.account;
+        const friend = req.query.account;
+        try {
+            let accounts = await db.Account.findAll();
+            for(let i=0;i<accounts.length;i++)
+            {
+                const messages = await db.Message.findOne({
+                    where:{
+                        accountId:accounts[i].id
+                    }
+                })
+
+                // if(messages!==null)
+                // {
+
+                // }
+            }
+
+            return res.send('Ok')
+        } catch (error) {
+            ErrorGeneral(error, 200, req, res, next);
         }
     }
 }
